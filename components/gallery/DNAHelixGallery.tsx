@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 
@@ -21,15 +21,19 @@ const DNAHelixGallery = ({ images }: DNAHelixGalleryProps) => {
   const [rotation, setRotation] = useState(0)
   const [mounted, setMounted] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
-  const [isSticky, setIsSticky] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
-  const [rotationStarted, setRotationStarted] = useState(false)
-  const [scrollCount, setScrollCount] = useState(0)
-  const [rotationComplete, setRotationComplete] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
-  const visualContainerRef = useRef<HTMLDivElement>(null)
-  const rotationStepRef = useRef(360 / images.length)
-  const MAX_SCROLLS = 3
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  })
+
+  // Smooth out the scroll progress to eliminate wheel jumpiness
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 50,
+    damping: 15,
+    mass: 0.5
+  })
 
   // Set mounted state and check mobile
   useEffect(() => {
@@ -42,81 +46,16 @@ const DNAHelixGallery = ({ images }: DNAHelixGalleryProps) => {
     
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
-  }, [images.length])
-
-  // Intersection observer to detect when gallery enters viewport
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true)
-          } else {
-            setIsVisible(false)
-          }
-        })
-      },
-      { threshold: 0.45 }
-    )
-
-    if (visualContainerRef.current) {
-      observer.observe(visualContainerRef.current)
-    }
-
-    return () => {
-      if (visualContainerRef.current) {
-        observer.unobserve(visualContainerRef.current)
-      }
-    }
   }, [])
 
-  // Reset rotation state when the gallery leaves view
+  // Tie rotation to smoothed scroll progress
   useEffect(() => {
-    if (!isVisible) {
-      setIsSticky(false)
-      setRotationStarted(false)
-      setScrollCount(0)
-      setRotationComplete(false)
-      setRotation(0)
-    }
-  }, [isVisible])
-
-  // Handle wheel events for discrete rotation steps
-  useEffect(() => {
-    const handleWheel = (e: WheelEvent) => {
-      if (!visualContainerRef.current || rotationComplete) return
-
-      const rect = visualContainerRef.current.getBoundingClientRect()
-      const isInViewport = rect.top <= window.innerHeight * 0.2 && rect.bottom >= window.innerHeight * 0.8
-
-      if (!isInViewport) return
-
-      // Activate sticky gallery on first rotation scroll
-      if (!rotationStarted) {
-        setRotationStarted(true)
-        setIsSticky(true)
-      }
-
-      // Smooth rotation based on scroll intensity
-      const rotationAmount = e.deltaY * 0.1
-      setRotation((prev) => prev + rotationAmount)
-
-      // Total rotation tracked to decide when to release sticky
-      setScrollCount((prevCount) => {
-        const newCount = prevCount + Math.abs(e.deltaY)
-        if (newCount >= 2000) { // Release sticky after sufficient scrolling
-          setRotationComplete(true)
-          setIsSticky(false)
-        }
-        return newCount
-      })
-    }
-
-    // Note: Removed e.preventDefault() to avoid trapping the user and console warnings.
-    // The sticky behavior now relies on the container height and user interaction.
-    window.addEventListener('wheel', handleWheel)
-    return () => window.removeEventListener('wheel', handleWheel)
-  }, [rotationComplete, rotationStarted])
+    // 720 degrees means 2 full spins during the 300vh scroll
+    const unsubscribe = smoothProgress.on('change', (latest) => {
+      setRotation(latest * 720)
+    })
+    return () => unsubscribe()
+  }, [smoothProgress])
 
   // Mouse movement parallax
   useEffect(() => {
@@ -171,12 +110,9 @@ const DNAHelixGallery = ({ images }: DNAHelixGalleryProps) => {
   return (
     <>
       {/* Main Gallery Container */}
-      <div ref={containerRef} className="relative w-full">
-        {/* Visual Gallery Section */}
-        <div
-          ref={visualContainerRef}
-          className={`relative w-full transition-all duration-300 ${isSticky ? 'h-screen sticky top-0' : 'h-[300vh]'}`}
-        >
+      <div ref={containerRef} className="relative w-full h-[300vh]">
+        {/* Sticky Visual Gallery Section */}
+        <div className="sticky top-0 w-full h-screen overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-black via-luxury-dark to-black overflow-hidden">
             {/* Particle Background */}
             <div className="absolute inset-0 opacity-30 pointer-events-none">
@@ -247,8 +183,9 @@ const DNAHelixGallery = ({ images }: DNAHelixGalleryProps) => {
                         }}
                         transition={{
                           type: 'spring',
-                          stiffness: 100,
-                          damping: 20,
+                          stiffness: 400,
+                          damping: 40,
+                          mass: 1
                         }}
                       >
                         <motion.div

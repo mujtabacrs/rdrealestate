@@ -74,9 +74,23 @@ export default function Booking() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    setIsSubmitting(false)
-    alert('Experience Reserved. A concierge will contact you shortly.')
+
+    try {
+      const response = await fetch('/api/leads/booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bookingData)
+      });
+      
+      if (!response.ok) throw new Error('Network error');
+      
+      setIsSubmitting(false)
+      alert('Experience Reserved. A concierge will contact you shortly via WhatsApp or Phone.')
+    } catch (error) {
+      console.error("Booking submission failed:", error);
+      setIsSubmitting(false)
+      alert("Failed to submit reservation. Please try again.");
+    }
   }
 
   const handleInputClick = (e: React.MouseEvent<HTMLInputElement>) => {

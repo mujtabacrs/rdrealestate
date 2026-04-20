@@ -2,6 +2,7 @@
 
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import QuickEnquiry from '@/components/ui/QuickEnquiry'
 
 export default function ClientLayout({
   children,
@@ -13,6 +14,7 @@ export default function ClientLayout({
       <Navbar />
       <main className="relative" style={{ position: 'relative' }}>{children}</main>
       <Footer />
+      <QuickEnquiry />
     </>
   )
 }

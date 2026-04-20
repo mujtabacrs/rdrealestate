@@ -42,7 +42,7 @@ const HeroSection = () => {
 
   return (
     <section ref={containerRef} className="relative h-[250vh] bg-[#12141a] z-10 block">
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center ">
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
           
         {/* Blured Background Image Layer */}
         <div className="absolute inset-0 z-0 flex w-full h-full">
