@@ -220,18 +220,9 @@ const DNAHelixGallery = ({ images }: DNAHelixGalleryProps) => {
                               />
                             </div>
 
-                            {/* Overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                            {/* Glow Overlay on Hover */}
+                            <div className="absolute inset-0 bg-luxury-gold/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                            {/* Content */}
-                            <div className="absolute inset-0 flex flex-col justify-end p-2 sm:p-3 md:p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                              <h3 className="text-white font-serif font-semibold text-xs sm:text-sm md:text-base mb-1">
-                                {image.title}
-                              </h3>
-                              <p className="text-luxury-gold text-xs">
-                                {image.category}
-                              </p>
-                            </div>
 
                             {/* Glow Effect */}
                             <div className="absolute inset-0 border-2 border-luxury-gold/0 group-hover:border-luxury-gold/70 rounded-xl transition-all duration-300 group-hover:shadow-[0_0_30px_rgba(212,175,55,0.5)]" />
@@ -276,15 +267,6 @@ const DNAHelixGallery = ({ images }: DNAHelixGalleryProps) => {
                 />
               </div>
 
-              {/* Info */}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-6 rounded-b-lg">
-                <h3 className="text-2xl font-serif font-semibold text-white mb-2">
-                  {images[selectedImage].title}
-                </h3>
-                <p className="text-luxury-gold">
-                  {images[selectedImage].category}
-                </p>
-              </div>
 
               {/* Navigation */}
               <button

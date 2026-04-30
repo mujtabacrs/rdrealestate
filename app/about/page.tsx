@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Award, Users, Globe, Heart } from 'lucide-react'
+import { IMAGES } from '@/config/images'
 
 export default function About() {
   const [heroRef, heroInView] = useInView({ triggerOnce: true, threshold: 0.1 })
@@ -17,7 +18,7 @@ export default function About() {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')`
+            backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('${IMAGES.about.hero}')`
           }}
         />
         
@@ -40,7 +41,7 @@ export default function About() {
       {/* Who We Are Section */}
       <section className="py-24 bg-luxury-charcoal">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-16">
             <motion.div
               ref={storyRef}
               initial={{ opacity: 0, x: -50 }}
@@ -52,7 +53,7 @@ export default function About() {
               </h2>
               <div className="space-y-6 text-gray-300 leading-relaxed">
                 <p className="text-lg">
-                  For over three decades, Luxe Haven has been synonymous with unparalleled luxury and exceptional hospitality. 
+                  For over three decades, Hotel Kargil has been synonymous with unparalleled luxury and exceptional hospitality. 
                   What began as a vision to create the world's most extraordinary resort experience has evolved into a legacy 
                   that continues to set new standards in luxury travel.
                 </p>
@@ -66,28 +67,6 @@ export default function About() {
                   service, we believe that luxury is not just about amenities—it's about creating moments that last a lifetime.
                 </p>
               </div>
-
-              {/* Stats */}
-              <div className="grid grid-cols-2 gap-8 mt-12">
-                {[
-                  { icon: Award, number: '50+', label: 'Awards Won' },
-                  { icon: Users, number: '100K+', label: 'Happy Guests' },
-                  { icon: Globe, number: '80+', label: 'Countries Served' },
-                  { icon: Heart, number: '30+', label: 'Years of Excellence' },
-                ].map((stat, index) => (
-                  <motion.div
-                    key={stat.label}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={storyInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    className="text-center"
-                  >
-                    <stat.icon size={32} className="text-luxury-gold mx-auto mb-3" />
-                    <div className="text-3xl font-bold text-white mb-1">{stat.number}</div>
-                    <div className="text-gray-400 text-sm">{stat.label}</div>
-                  </motion.div>
-                ))}
-              </div>
             </motion.div>
 
             <motion.div
@@ -96,11 +75,11 @@ export default function About() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative"
             >
-              <div className="relative rounded-2xl overflow-hidden">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <img
-                  src="https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                  src={IMAGES.about.interior}
                   alt="Luxury hotel interior"
-                  className="w-full h-96 object-cover"
+                  className="w-full h-[500px] object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               </div>
@@ -108,7 +87,7 @@ export default function About() {
               {/* Floating Card */}
               <motion.div
                 whileHover={{ y: -10 }}
-                className="absolute -bottom-8 -left-8 glass p-6 rounded-xl"
+                className="absolute -bottom-8 -left-8 glass p-6 rounded-xl hidden md:block"
               >
                 <h4 className="text-xl font-serif font-semibold text-luxury-gold mb-2">
                   Excellence Recognized
@@ -118,6 +97,28 @@ export default function About() {
                 </p>
               </motion.div>
             </motion.div>
+          </div>
+
+          {/* Stats - Single Line underneath */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { icon: Award, number: '50+', label: 'Awards Won' },
+              { icon: Users, number: '100K+', label: 'Happy Guests' },
+              { icon: Globe, number: '80+', label: 'Countries Served' },
+              { icon: Heart, number: '30+', label: 'Years of Excellence' },
+            ].map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 30 }}
+                animate={storyInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="text-center glass p-8 rounded-2xl border border-white/5"
+              >
+                <stat.icon size={32} className="text-luxury-gold mx-auto mb-4" />
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{stat.number}</div>
+                <div className="text-gray-400 text-xs md:text-sm uppercase tracking-widest">{stat.label}</div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -138,9 +139,9 @@ export default function About() {
             
             <div className="glass rounded-3xl p-8 md:p-12">
               <div className="flex flex-col md:flex-row items-center gap-8">
-                <div className="w-32 h-32 rounded-full overflow-hidden ring-4 ring-luxury-gold/30 flex-shrink-0">
+                <div className="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden ring-4 ring-luxury-gold/30 flex-shrink-0">
                   <img
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+                    src={IMAGES.about.owner}
                     alt="Owner"
                     className="w-full h-full object-cover"
                   />
@@ -148,7 +149,7 @@ export default function About() {
                 
                 <div className="text-left">
                   <blockquote className="text-xl md:text-2xl text-gray-200 leading-relaxed mb-6 italic font-light">
-                    "When I envisioned Luxe Haven, I dreamed of creating more than just a hotel. 
+                    "When I envisioned Hotel Kargil, I dreamed of creating more than just a hotel. 
                     I wanted to craft a sanctuary where every guest feels like royalty, where every moment 
                     is infused with magic, and where memories are born that last a lifetime. Today, 
                     seeing the joy on our guests' faces, I know we've achieved something truly special."
@@ -156,7 +157,7 @@ export default function About() {
                   
                   <div className="text-right">
                     <div className="text-luxury-gold font-serif text-2xl mb-1">
-                      Alexander Sterling
+                      Kiffayat Jaffri
                     </div>
                     <div className="text-gray-400">
                       Founder & Owner
@@ -218,7 +219,7 @@ export default function About() {
               </h3>
               <p className="text-gray-300 leading-relaxed">
                 To be recognized as the world's premier luxury resort destination, setting the gold standard 
-                for hospitality excellence. We envision a future where Luxe Haven becomes synonymous with 
+                for hospitality excellence. We envision a future where Hotel Kargil becomes synonymous with 
                 the ultimate luxury travel experience, inspiring wanderlust and creating lifelong connections.
               </p>
             </motion.div>

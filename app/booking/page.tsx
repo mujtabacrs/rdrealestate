@@ -4,6 +4,7 @@ import { useState, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Calendar, Users, Bed, Wifi, Car, Coffee, Star, Check, MapPin, Wallet, ShieldCheck, ChevronRight, Gem } from 'lucide-react'
+import { IMAGES } from '@/config/images'
 
 export default function Booking() {
   const [bookingData, setBookingData] = useState({
@@ -35,21 +36,21 @@ export default function Booking() {
       id: 'deluxe',
       name: 'Deluxe Suite',
       price: 450,
-      image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+      image: IMAGES.booking.rooms.deluxe,
       features: ['Ocean View', 'King Bed', 'Private Balcony', 'Marble Bathroom']
     },
     {
       id: 'premium',
       name: 'Premium Suite',
       price: 650,
-      image: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+      image: IMAGES.booking.rooms.premium,
       features: ['Panoramic View', 'King Bed', 'Living Area', 'Jacuzzi', 'Butler Service']
     },
     {
       id: 'presidential',
       name: 'Presidential Suite',
       price: 1200,
-      image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+      image: IMAGES.booking.rooms.presidential,
       features: ['Penthouse Level', 'Master Bedroom', 'Private Dining', 'Personal Chef', 'Helicopter Access']
     }
   ]
@@ -111,7 +112,7 @@ export default function Booking() {
           style={{ opacity: heroOpacity, scale: imageScale }}
         >
           <img 
-            src="https://images.unsplash.com/photo-1544070078-a212eda27b49?q=80&w=2070&auto=format&fit=crop"
+            src={IMAGES.booking.hero}
             alt="Ladakh Background"
             className="w-full h-full object-cover grayscale brightness-50"
           />

@@ -38,17 +38,17 @@ export default function Contact() {
     {
       icon: MapPin,
       title: 'Address',
-      details: ['123 Luxury Avenue', 'Paradise City, PC 12345'],
+      details: ['Main Market Kargil', 'Ladakh, UT, India 194103'],
     },
     {
       icon: Phone,
       title: 'Phone',
-      details: ['+1 (555) 123-4567', '+1 (555) 123-4568'],
+      details: ['+91 1985 232022', '+91 94191 76543'],
     },
     {
       icon: Mail,
       title: 'Email',
-      details: ['info@luxehaven.com', 'reservations@luxehaven.com'],
+      details: ['info@theindiankargil.com', 'reservations@theindiankargil.com'],
     },
     {
       icon: Clock,
@@ -233,7 +233,7 @@ export default function Contact() {
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
               Don't wait to create unforgettable memories. Book your stay today and discover 
-              what makes Luxe Haven the ultimate luxury destination.
+              what makes Hotel Kargil the ultimate luxury destination.
             </p>
             <motion.a
               href="/booking"

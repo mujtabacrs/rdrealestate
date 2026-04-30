@@ -25,10 +25,10 @@ const Footer = () => {
           {/* Brand */}
           <div className="space-y-4">
             <h3 className="text-2xl font-serif font-bold text-gradient">
-              Luxe Haven
+              Hotel Kargil
             </h3>
             <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-              Experience unparalleled luxury and comfort at our premium resort. 
+              Experience unparalleled luxury and comfort at our premium resort in Ladakh. 
               Where every moment becomes a cherished memory.
             </p>
             <div className="flex space-x-4">
@@ -68,15 +68,15 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
                 <MapPin size={18} className="text-luxury-gold" />
-                <span>123 Luxury Avenue, Paradise City</span>
+                <span>Main Market Kargil, Ladakh</span>
               </div>
               <div className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
                 <Phone size={18} className="text-luxury-gold" />
-                <span>+1 (555) 123-4567</span>
+                <span>+91 1985 232022</span>
               </div>
               <div className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
                 <Mail size={18} className="text-luxury-gold" />
-                <span>info@luxehaven.com</span>
+                <span>info@theindiankargil.com</span>
               </div>
             </div>
           </div>
@@ -107,7 +107,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-gray-200 dark:border-white/10 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-500 dark:text-gray-400 text-sm">
-            © 2024 Luxe Haven. All rights reserved.
+            © 2026 Hotel Kargil. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link href="#" className="text-gray-500 dark:text-gray-400 hover:text-luxury-gold text-sm transition-colors">

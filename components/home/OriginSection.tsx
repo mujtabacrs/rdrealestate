@@ -2,6 +2,7 @@
 
 import { useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
+import { IMAGES } from '@/config/images'
 
 const OriginSection = () => {
   const containerRef = useRef<HTMLElement>(null)
@@ -27,7 +28,7 @@ const OriginSection = () => {
           {/* Subtle Glow behind the object */}
           <div className="absolute inset-0 bg-c-gold/20 blur-3xl rounded-full" />
           <img 
-            src="https://images.unsplash.com/photo-1540518614846-7eded433c457?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+            src={IMAGES.home.origin} 
             alt="Origin Object"
             className="w-full h-full object-contain relative z-20 mix-blend-screen grayscale brightness-125"
           />

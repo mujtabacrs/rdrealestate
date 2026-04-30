@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
+import { IMAGES } from '@/config/images'
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -30,21 +31,25 @@ const Navbar = () => {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled
-          ? 'bg-luxury-charcoal/95 backdrop-blur-lg shadow-lg border-b border-white/10'
-          : 'bg-transparent'
-      }`}
+      style={{ isolation: 'isolate' }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
+        ? 'bg-luxury-charcoal/95 backdrop-blur-lg shadow-lg border-b border-white/10'
+        : 'bg-transparent'
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center group">
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="text-2xl font-serif font-bold text-gradient"
+              className="flex items-center"
             >
-              Luxe Haven
+              <img 
+                src={IMAGES.logo} 
+                alt="Hotel Kargil Logo" 
+                className="h-24 md:h-32 w-auto object-contain"
+              />
             </motion.div>
           </Link>
 
@@ -91,11 +96,10 @@ const Navbar = () => {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`block ${
-                    item.isButton
-                      ? 'btn-luxury text-center'
-                      : 'text-white hover:text-luxury-gold transition-colors duration-300 font-medium'
-                  }`}
+                  className={`block ${item.isButton
+                    ? 'btn-luxury text-center'
+                    : 'text-white hover:text-luxury-gold transition-colors duration-300 font-medium'
+                    }`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.name}

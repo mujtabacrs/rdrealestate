@@ -5,9 +5,9 @@ import { ThemeProvider } from '@/context/ThemeContext'
 import SmoothScroll from '@/components/ui/SmoothScroll'
 
 export const metadata: Metadata = {
-  title: 'Luxe Haven - Premium Luxury Hotel',
-  description: 'Experience unparalleled luxury at Luxe Haven. Premium accommodations, world-class amenities, and exceptional service.',
-  keywords: 'luxury hotel, premium accommodation, spa, fine dining, resort',
+  title: 'Hotel Kargil - Luxury Redefined',
+  description: 'Experience unparalleled luxury at Hotel Kargil. Premium accommodations, world-class amenities, and exceptional service in the heart of Ladakh.',
+  keywords: 'luxury hotel kargil, hotel kargil, ladakh accommodation, premium resort kargil',
 }
 
 export default function RootLayout({

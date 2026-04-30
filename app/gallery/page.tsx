@@ -1,72 +1,13 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { IMAGES } from '@/config/images'
 import DNAHelixGallery from '@/components/gallery/DNAHelixGallery'
 
 export default function Gallery() {
   // Gallery images data - Ladakh themed
-  const galleryImages = [
-    {
-      src: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      title: 'Pangong Lake',
-      category: 'Landscapes'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      title: 'Himalayan Mountains',
-      category: 'Nature'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      title: 'Thiksey Monastery',
-      category: 'Culture'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      title: 'Luxury Suite',
-      category: 'Rooms'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      title: 'Nubra Valley',
-      category: 'Landscapes'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      title: 'Buddhist Monastery',
-      category: 'Culture'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      title: 'Mountain View Room',
-      category: 'Rooms'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      title: 'Ladakh Peaks',
-      category: 'Nature'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      title: 'Spa & Wellness',
-      category: 'Amenities'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1454391304352-2bf4678b1a7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      title: 'Tso Moriri Lake',
-      category: 'Landscapes'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      title: 'Traditional Cuisine',
-      category: 'Dining'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      title: 'Starry Night Sky',
-      category: 'Nature'
-    },
-  ]
+  const galleryImages = IMAGES.gallery
+
 
   return (
     <div className="min-h-screen pt-20 bg-black">

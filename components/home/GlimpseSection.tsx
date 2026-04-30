@@ -3,6 +3,7 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import Link from 'next/link'
+import { IMAGES } from '@/config/images'
 
 const GlimpseSection = () => {
   const containerRef = useRef<HTMLElement>(null)
@@ -19,50 +20,15 @@ const GlimpseSection = () => {
     restDelta: 0.001
   })
 
-  const images = [
-    {
-      src: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=900&auto=format&fit=crop',
-      title: 'Ocean View Suite',
-      description: 'Wake up to breathtaking vistas'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1590490359683-658d3d23f972?q=80&w=900&auto=format&fit=crop',
-      title: 'Royal Sanctuary',
-      description: 'Unparalleled comfort and design'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=900&auto=format&fit=crop',
-      title: 'Infinity Reflection',
-      description: 'The line between water and sky'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?q=80&w=900&auto=format&fit=crop',
-      title: 'Starlight Terrace',
-      description: 'Dine under the Himalayan sky'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=900&auto=format&fit=crop',
-      title: 'Zen Retreat',
-      description: 'A curriculum of silence'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1629721671030-a83edbb11237?q=80&w=900&auto=format&fit=crop',
-      title: 'The Great Gorge',
-      description: 'The epic journey to origin'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?q=80&w=900&auto=format&fit=crop',
-      title: 'Artisan Culinary',
-      description: 'Form results from context and material'
-    }
-  ]
+  const images = IMAGES.home.glimpse
+
 
   // Parallax transforms for images - Wider range for more items
   const xTranslate = useTransform(smoothProgress, [0, 1], [0, -1200])
   const svgScale = useTransform(smoothProgress, [0, 1], [1, 1.2])
 
   return (
-    <section ref={containerRef} style={{ position: 'relative' }} className="relative pt-16 pb-40 bg-c-black overflow-hidden select-none">
+    <section ref={containerRef} style={{ position: 'relative' }} className="relative pt-16 pb-16 md:pb-40 bg-c-black overflow-hidden select-none">
       
       {/* Sequence Decorative SVG Path (Obsidian Style) */}
       <div className="absolute inset-0 pointer-events-none z-0">
@@ -194,7 +160,7 @@ const GlimpseSection = () => {
 
       {/* Decorative Arch Gradient Border */}
       <div className="flex justify-center w-full">
-        <div className="w-px h-32 bg-gradient-to-b from-luxury-gold to-transparent opacity-30" />
+        <div className="w-px h-16 md:h-32 bg-gradient-to-b from-luxury-gold to-transparent opacity-30" />
       </div>
 
     </section>

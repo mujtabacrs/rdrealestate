@@ -12,7 +12,7 @@ export default function QuickEnquiry() {
   const [contact, setContact] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [waMessage, setWaMessage] = useState(
-    "Hi Luxe Haven! I'm interested in booking a stay. Could you help me with some details?"
+    "Hi Hotel Kargil! I'm interested in booking a stay. Could you help me with some details?"
   );
 
   const [shouldFlicker, setShouldFlicker] = useState(false);
