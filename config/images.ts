@@ -19,47 +19,47 @@ export const IMAGES = {
     videoPreview: '/images/khg3.jpeg',
     glimpse: [
       {
-        src: '/glimpse/LADAKH SENERY 2.jpg',
+        src: '/GLIMPSE/LADAKH SENERY 2.jpg',
         title: 'Lamayuru Monastery',
         description: 'The Moonland of Ladakh, where ancient architecture meets rugged terrain.'
       },
       {
-        src: '/glimpse/LADAKH SENERY 3.jpg',
+        src: '/GLIMPSE/LADAKH SENERY 3.jpg',
         title: 'Pangong Tso',
         description: 'The sapphire blue waters reflecting the high-altitude Himalayan peaks.'
       },
       {
-        src: '/glimpse/LADAKH SENERY 4.jpg',
+        src: '/GLIMPSE/LADAKH SENERY 4.jpg',
         title: 'Maitreya Buddha',
         description: 'The protector of Nubra Valley, standing tall against the snow-capped range.'
       },
       {
-        src: '/glimpse/LADAKH SENERY 5.jpg',
+        src: '/GLIMPSE/LADAKH SENERY 5.jpg',
         title: 'The High Road',
         description: 'Journey through the highest motorable passes in the world.'
       },
       {
-        src: '/glimpse/LADAKH SENERY 6.jpg',
+        src: '/GLIMPSE/LADAKH SENERY 6.jpg',
         title: 'Crystal Waters',
         description: 'The vibrant turquoise hues of Ladakh\'s high-altitude saline lakes.'
       },
       {
-        src: '/glimpse/LADAKH SENERY 7.jpg',
+        src: '/GLIMPSE/LADAKH SENERY 7.jpg',
         title: 'Azure Horizons',
         description: 'Where the deep blue of the sky meets the clear mountain waters.'
       },
       {
-        src: '/glimpse/LADAKH SENERY 8.jpg',
+        src: '/GLIMPSE/LADAKH SENERY 8.jpg',
         title: 'Gata Loops',
         description: '21 hair-raising bends on the highway, a testament to engineering and endurance.'
       },
       {
-        src: '/glimpse/LADAKH SENERY 9.jpg',
+        src: '/GLIMPSE/LADAKH SENERY 9.jpg',
         title: 'Bactrian Camels',
         description: 'The unique double-humped inhabitants of the Hunder sand dunes.'
       },
       {
-        src: '/glimpse/NUBRA VALLEY.jpg',
+        src: '/GLIMPSE/NUBRA VALLEY.jpg',
         title: 'Nubra Sunset',
         description: 'The golden hour painting the Shyok River and the surrounding valley.'
       }
