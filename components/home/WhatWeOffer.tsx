@@ -74,16 +74,16 @@ const WhatWeOffer = () => {
           style={{ y: headingY, opacity: headingOpacity }}
           className="font-editorial text-2xl md:text-3xl text-foreground-rgb leading-tight mb-20 max-w-2xl"
         >
-          Luxury is not designed first and placed later. It is formed within specific places and only remains truly authentic there.
+          Luxury in the Himalayas is an intimate dialogue between the rugged majesty of the mountains and the timeless warmth of Ladakhi hospitality.
         </motion.h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-16 text-left">
 
           {[
-            { title: "Wellness & Spa", text: "Rejuvenate your senses with our world-class treatments. A curriculum of silence and restoration." },
-            { title: "Culinary Arts", text: "Savor exquisite cuisine crafted by our award-winning chefs. Material and use at the point of origin." },
-            { title: "Premium Suites", text: "Elegantly appointed rooms with breathtaking views. Form results from context and local material." },
-            { title: "Mountain Retreat", text: "Experience thrilling activities from skiing to climbing. Adventure as a circulate independently after release." }
+            { title: "Himalayan Hospitality", text: "Experience the profound warmth of Ladakh merged with modern luxury. A legacy of service rooted in the heart of Kargil's historic landscape." },
+            { title: "Culinary Heritage", text: "Savor authentic flavors of the Silk Route alongside global gourmet cuisine. Freshly sourced ingredients from the fertile Suru Valley." },
+            { title: "Artisan Suites", text: "Elegantly appointed sanctuaries inspired by the rugged beauty of our peaks. A haven of comfort redefined amidst the Karakoram ranges." },
+            { title: "Cultural Immersion", text: "From exploring ancient monasteries to the silent majesty of local monuments. Discover the untold stories of a land frozen in time." }
           ].map((item, i) => (
             <motion.div
               key={i}

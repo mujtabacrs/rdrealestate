@@ -9,6 +9,7 @@ export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     message: ''
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -19,12 +20,24 @@ export default function Contact() {
     e.preventDefault()
     setIsSubmitting(true)
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    setIsSubmitting(false)
-    setFormData({ name: '', email: '', message: '' })
-    alert('Thank you for your message! We will get back to you soon.')
+    try {
+      const response = await fetch('/api/leads/enquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) throw new Error(result.error || 'Failed to submit')
+      
+      setIsSubmitting(false)
+      setFormData({ name: '', email: '', phone: '', message: '' })
+      alert('Thank you for your message! We will get back to you soon on WhatsApp.')
+    } catch (error) {
+      setIsSubmitting(false)
+      alert('Failed to send message. Please try again.')
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -43,12 +56,12 @@ export default function Contact() {
     {
       icon: Phone,
       title: 'Phone',
-      details: ['+91 1985 232022', '+91 94191 76543'],
+      details: ['+91 97961 11172'],
     },
     {
       icon: Mail,
       title: 'Email',
-      details: ['info@theindiankargil.com', 'reservations@theindiankargil.com'],
+      details: ['admin.thindiankargil@gmail.com', 'bookings.thindiankargil@gmail.com'],
     },
     {
       icon: Clock,
@@ -124,6 +137,27 @@ export default function Contact() {
                     required
                     className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-luxury-gold focus:bg-white/15 transition-all duration-300"
                     placeholder="Enter your email address"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="phone" className="block text-luxury-gold font-medium mb-2">
+                    WhatsApp Number
+                  </label>
+                  <motion.input
+                    whileFocus={{ scale: 1.02 }}
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/[^0-9]/g, '');
+                      setFormData({ ...formData, phone: val.slice(0, 10) });
+                    }}
+                    required
+                    maxLength={10}
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-luxury-gold focus:bg-white/15 transition-all duration-300"
+                    placeholder="Enter 10-digit number"
                   />
                 </div>
 

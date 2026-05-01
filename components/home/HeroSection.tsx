@@ -109,8 +109,8 @@ const HeroSection = () => {
 
           {/* Top Detail */}
           <div className="text-center">
-            <span className="uppercase tracking-[0.5em] text-[0.6rem] text-white/40">
-              Imagine Possible
+            <span className="uppercase tracking-[0.5em] text-[0.6rem] text-white">
+              Experience Kargil
             </span>
           </div>
 
@@ -118,15 +118,15 @@ const HeroSection = () => {
 
             {/* Left Block */}
             <div className="max-w-[15rem] text-left hidden md:block absolute left-0 top-1/2 -translate-y-1/2">
-              <p className="text-[0.65rem] uppercase tracking-widest leading-relaxed text-white/70">
-                Hotel Kargil spaces are physical items formed within specific places.
+              <p className="text-[0.65rem] uppercase tracking-widest leading-relaxed text-white">
+                Hotel The Indian Kargil is your premium gateway to the majestic landscapes of Ladakh.
               </p>
             </div>
 
             {/* Right Block */}
             <div className="max-w-[15rem] text-right hidden md:block absolute right-0 top-1/2 -translate-y-1/2">
-              <p className="text-[0.65rem] uppercase tracking-widest leading-relaxed text-white/70">
-                Their form results from context, material, and use at the point of origin.
+              <p className="text-[0.65rem] uppercase tracking-widest leading-relaxed text-white">
+                We blend modern luxury with traditional Ladakhi warmth for an unforgettable stay.
               </p>
             </div>
 

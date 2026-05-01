@@ -4,10 +4,10 @@ import { sendWhatsAppNotification } from '@/utils/whatsappService';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { checkIn, checkOut, adults, children, roomType } = body;
+    const { checkIn, checkOut, adults, children, roomType, roomPlan, fullName, phone, specialRequests } = body;
 
     // Basic validation
-    if (!checkIn || !roomType) {
+    if (!checkIn || !roomType || !fullName || !phone) {
       return NextResponse.json(
         { error: 'Booking details are incomplete' },
         { status: 400 }
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     }
 
     // Format the message
-    const message = `🛎️ *New Booking Reservation* 🛎️\n\n*Room:* ${roomType}\n*Check-In:* ${checkIn}\n*Check-Out:* ${checkOut || 'Not specified'}\n*Guests:* ${adults} Adults, ${children} Children\n\n_Please follow up with the guest._`;
+    const message = `🛎️ *New Booking Reservation* 🛎️\n\n*Guest:* ${fullName}\n*Phone:* ${phone}\n*Room:* ${roomType}\n*Plan:* ${roomPlan}\n*Check-In:* ${checkIn}\n*Check-Out:* ${checkOut || 'Not specified'}\n*Guests:* ${adults} Adults, ${children} Children\n*Requests:* ${specialRequests || 'None'}\n\n_Please follow up with the guest on WhatsApp._`;
 
     // Send the notification
     const result = await sendWhatsAppNotification(message);

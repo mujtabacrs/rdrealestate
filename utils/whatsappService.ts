@@ -21,13 +21,13 @@ export const sendWhatsAppNotification = async (messageText: string) => {
     return { success: true, mocked: true };
   }
 
-  const url = `https://graph.facebook.com/v17.0/${WHATSAPP_PHONE_NUMBER_ID}/messages`;
+  const url = `https://api.waibusiness.com/messages/m`;
 
   try {
     const response = await fetch(url, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${WHATSAPP_API_TOKEN}`,
+        'x-api-key': WHATSAPP_API_TOKEN,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -45,6 +45,7 @@ export const sendWhatsAppNotification = async (messageText: string) => {
     const data = await response.json();
     
     if (!response.ok) {
+      console.error("WhatsApp API Error Response:", data);
       throw new Error(data.error?.message || 'Failed to send WhatsApp message');
     }
 

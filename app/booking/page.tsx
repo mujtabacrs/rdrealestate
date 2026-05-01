@@ -1,11 +1,70 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import Link from 'next/link'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { useInView } from 'react-intersection-observer'
-import { Calendar, Users, Bed, Wifi, Car, Coffee, Star, Check, MapPin, Wallet, ShieldCheck, ChevronRight, Gem, Phone, Mail, Globe, FileText } from 'lucide-react'
+import { 
+  Calendar, Users, Bed, Wifi, Car, Coffee, Star, Check, MapPin, 
+  Phone, Mail, Globe, FileText, ChevronRight, ShieldCheck, 
+  CarFront, Map, Activity, Utensils, Scissors, Plus, Minus
+} from 'lucide-react'
 import { IMAGES } from '@/config/images'
+
+// Tariff Data Interfaces
+interface TariffItem {
+  name: string;
+  tag?: string;
+  prices: {
+    EP: number | string;
+    CP: number | string;
+    MAP: number | string;
+    AP: number | string;
+  };
+}
+
+interface TariffCategory {
+  category: string;
+  items: TariffItem[];
+}
+
+// Tariff Data from Image 2
+const TARIFF_DATA: TariffCategory[] = [
+  {
+    category: 'Rooms',
+    items: [
+      { 
+        name: 'Luxury Double', 
+        tag: 'Pet Included',
+        prices: { EP: 2800, CP: 3100, MAP: 3600, AP: 3850 } 
+      },
+      { 
+        name: 'Deluxe Double', 
+        prices: { EP: 2500, CP: 2800, MAP: 3400, AP: 3600 } 
+      },
+    ]
+  },
+  {
+    category: 'Extra Bed',
+    items: [
+      { 
+        name: 'Extra Bed (Above 7 Yrs)', 
+        prices: { EP: 1200, CP: 1400, MAP: 1600, AP: 1840 } 
+      },
+      { 
+        name: 'Extra Bed (Below 7 Yrs)', 
+        prices: { EP: 'FREE', CP: 350, MAP: 500, AP: 800 } 
+      },
+    ]
+  }
+]
+
+const PLANS = [
+  { id: 'EP', name: 'EP', desc: 'European Plan (Room Only)' },
+  { id: 'CP', name: 'CP', desc: 'Continental Plan (+ Breakfast)' },
+  { id: 'MAP', name: 'MAP', desc: 'Modified American Plan (+ Breakfast & Dinner)' },
+  { id: 'AP', name: 'AP', desc: 'American Plan (All Meals Included)' },
+]
+
 
 export default function Booking() {
   const [currentStep, setCurrentStep] = useState(1)
@@ -14,7 +73,10 @@ export default function Booking() {
     checkOut: '',
     adults: '2',
     children: '0',
-    roomType: 'deluxe',
+    roomType: '',
+    roomPlan: '',
+    extraBedType: '',
+    extraBedPlan: '',
     fullName: '',
     email: '',
     phone: '',
@@ -22,9 +84,13 @@ export default function Booking() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [reservationId, setReservationId] = useState('')
-  
-  const [inViewRef, inView] = useInView({ triggerOnce: true, threshold: 0.1 })
-  
+  const [error, setError] = useState('')
+
+  const showError = (msg: string) => {
+    setError(msg)
+    setTimeout(() => setError(''), 4000)
+  }
+
   // Hero Scroll Logic
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
@@ -38,92 +104,97 @@ export default function Booking() {
   const heroOpacity = useTransform(scrollYProgress, [0.15, 0.25], [1, 0])
   const imageScale = useTransform(scrollYProgress, [0, 0.3], [1, 1.2])
 
-  const roomTypes = [
-    {
-      id: 'deluxe',
-      name: 'Deluxe Suite',
-      price: 450,
-      image: IMAGES.booking.rooms.deluxe,
-      features: ['Mountain View', 'King Bed', 'Private Balcony']
-    },
-    {
-      id: 'premium',
-      name: 'Premium Suite',
-      price: 650,
-      image: IMAGES.booking.rooms.premium,
-      features: ['Panoramic View', 'Living Area', 'Butler Service']
-    },
-    {
-      id: 'presidential',
-      name: 'Presidential Suite',
-      price: 1200,
-      image: IMAGES.booking.rooms.presidential,
-      features: ['Penthouse Level', 'Personal Chef', 'Private Dining']
-    }
-  ]
-
-  const selectedRoom = roomTypes.find(room => room.id === bookingData.roomType)
-  const nights = bookingData.checkIn && bookingData.checkOut 
-    ? Math.max(1, Math.ceil((new Date(bookingData.checkOut).getTime() - new Date(bookingData.checkIn).getTime()) / (1000 * 60 * 60 * 24)))
-    : 1
-  const subtotal = selectedRoom ? selectedRoom.price * nights : 0
-  const taxes = subtotal * 0.12
-  const total = subtotal + taxes
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
+    
+    // Only allow numbers for phone field
+    if (name === 'phone') {
+      const numericValue = value.replace(/[^0-9]/g, '')
+      setBookingData(prev => ({ ...prev, [name]: numericValue.slice(0, 10) }))
+      return
+    }
+
     setBookingData(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleNext = () => {
-    if (currentStep === 1) {
-      if (!bookingData.checkIn || !bookingData.checkOut) {
-        alert("Please select your stay dates.");
-        return;
+  const handleSelectTariff = (category: string, name: string, plan: string) => {
+    if (category === 'Rooms') {
+      setBookingData(prev => ({ ...prev, roomType: name, roomPlan: plan }))
+    } else {
+      // Toggle extra bed selection
+      if (bookingData.extraBedType === name && bookingData.extraBedPlan === plan) {
+        setBookingData(prev => ({ ...prev, extraBedType: '', extraBedPlan: '' }))
+      } else {
+        setBookingData(prev => ({ ...prev, extraBedType: name, extraBedPlan: plan }))
       }
     }
-    setCurrentStep(prev => prev + 1)
-    window.scrollTo({ top: window.innerHeight * 0.8, behavior: 'smooth' })
   }
-
-  const handleBack = () => setCurrentStep(prev => prev - 1)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!bookingData.fullName || !bookingData.email || !bookingData.phone) {
-      alert("Please complete your guest details.");
-      return;
+    if (!bookingData.fullName || !bookingData.phone || !bookingData.checkIn || !bookingData.checkOut) {
+      showError("Complete all guest details")
+      return
+    }
+
+    if (bookingData.phone.length !== 10) {
+      showError("Enter 10-digit number")
+      return
+    }
+
+    if (!bookingData.roomType || !bookingData.roomPlan) {
+      const tariffSection = document.getElementById('room-tariff')
+      if (tariffSection) {
+        tariffSection.scrollIntoView({ behavior: 'smooth' })
+        showError("Select a room first")
+      }
+      return
     }
     setIsSubmitting(true)
 
     try {
-      // Simulate API call and generate a mock ID
-      const mockId = `RES-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
-      
       const response = await fetch('/api/leads/booking', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...bookingData, reservationId: mockId })
-      });
+        body: JSON.stringify(bookingData)
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) throw new Error(result.error || 'Failed to submit')
       
+      const mockId = `RES-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
       setReservationId(mockId)
       setIsSubmitting(false)
-      setCurrentStep(3)
+      setCurrentStep(2)
     } catch (error) {
-      console.error("Booking submission failed:", error);
       setIsSubmitting(false)
-      alert("Failed to submit reservation. Please try again.");
+      showError("Submission failed")
     }
   }
 
-  const handlePrint = () => {
-    window.print()
-  }
+  const handlePrint = () => window.print()
+
+  // Confirmation view is now rendered as a modal at the bottom of the component
+
 
   return (
-    <div ref={containerRef} className="relative bg-[#0d0e12] text-white min-h-[300vh] overflow-x-hidden">
+    <div ref={containerRef} className="relative bg-[#0d0e12] text-white min-h-[300vh] overflow-x-hidden selection:bg-luxury-gold selection:text-white no-print">
+
+      {/* Error Toast Notification */}
+      {error && (
+        <motion.div 
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="fixed top-10 right-10 z-[200] bg-red-600 text-white px-8 py-4 rounded-2xl shadow-[0_20px_50px_rgba(220,38,38,0.3)] flex items-center gap-4 border border-white/20 backdrop-blur-md"
+        >
+          <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+          <p className="text-xs font-black uppercase tracking-[0.2em]">{error}</p>
+        </motion.div>
+      )}
+
       
-      {/* Cinematic Hero - Only visible at start */}
+      {/* Cinematic Hero - Original Section Restored */}
       <div className="cinematic-hero sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden z-0 bg-[#0d0e12]">
         <motion.div 
           className="absolute inset-0 z-0 opacity-40 blur-[2px]"
@@ -144,477 +215,573 @@ export default function Booking() {
             style={{ y: titleY, scale: titleScale }}
             className="block font-editorial text-[10vw] leading-none uppercase tracking-tighter text-white"
           >
-            {currentStep === 3 ? 'Confirmed' : 'Reserve'}
+            Reserve
           </motion.span>
           <motion.span 
             style={{ y: titleY, scale: titleScale }}
             className="block font-editorial text-[4vw] italic tracking-widest text-luxury-gold"
           >
-            {currentStep === 3 ? 'See You Soon' : 'Your Sanctuary'}
+            Your Sanctuary
           </motion.span>
         </motion.div>
       </div>
 
       {/* Main Content Area */}
-      <section className="booking-content-section relative z-10 py-24 bg-white dark:bg-luxury-dark text-black dark:text-white min-h-screen">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          {/* Step Indicator */}
-          {currentStep < 3 && (
-            <div className="flex justify-center mb-16">
-              <div className="flex items-center gap-4">
-                {[1, 2].map(s => (
-                  <div key={s} className="flex items-center">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold transition-all duration-500 ${currentStep >= s ? 'bg-luxury-gold text-black shadow-lg shadow-luxury-gold/20' : 'bg-gray-100 dark:bg-white/5 text-gray-400'}`}>
-                      {currentStep > s ? <Check size={20} /> : s}
-                    </div>
-                    {s === 1 && <div className={`w-20 h-px transition-colors duration-500 ${currentStep > 1 ? 'bg-luxury-gold' : 'bg-gray-200 dark:bg-white/10'}`} />}
-                  </div>
-                ))}
+      <div className="relative z-10 bg-[#0b1527]">
+        
+        {/* Header / Hero Section (Image 1 Style - now below cinematic hero) */}
+        <section className="relative py-20 px-4 md:px-12 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+        <div className="space-y-10">
+          <div className="space-y-2">
+            <motion.p 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-luxury-gold tracking-[0.4em] text-sm font-bold uppercase"
+            >
+              Hotel The
+            </motion.p>
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-6xl md:text-7xl font-serif font-bold leading-none tracking-tight"
+            >
+              INDIAN KARGIL
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="text-gray-400 tracking-[0.2em] text-xs uppercase border-t border-luxury-gold/30 pt-4 inline-block"
+            >
+              Kargil, J&K — Himalayan Hospitality
+            </motion.p>
+          </div>
+
+          <div className="w-16 h-1 bg-luxury-gold" />
+
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="text-lg text-gray-300 italic leading-relaxed max-w-lg"
+          >
+            "Nestled under crystal blue skies, cradled in the Himalayan snow-clad mountains of Kargil — your perfect leisure & corporate retreat."
+          </motion.p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="border border-luxury-gold/30 p-4 rounded-lg flex items-center justify-center text-sm font-bold tracking-widest bg-white/5">
+              12 Luxury Rooms
+            </div>
+            <div className="border border-luxury-gold/30 p-4 rounded-lg flex items-center justify-center text-sm font-bold tracking-widest bg-white/5">
+              12 Deluxe Rooms
+            </div>
+          </div>
+
+          {/* Features List Box (Image 1) */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5 }}
+            className="bg-white text-luxury-charcoal p-8 rounded-xl shadow-2xl grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8"
+          >
+            {[
+              'Professional Staff', 'Quality Service', 'Quality Food', 
+              'Top Notch Infrastructure', 'Pet Friendly', '24x7 Electricity',
+              '24x7 Water Supply (Hot&Cold)', 'Hygienic & Pure'
+            ].map((f, i) => (
+              <div key={f} className="flex items-center gap-3 text-sm font-bold">
+                <div className="w-1.5 h-1.5 bg-luxury-gold rounded-full" />
+                {f}
               </div>
-            </div>
-          )}
+            ))}
+          </motion.div>
 
-          <div className={`${currentStep === 3 ? 'max-w-3xl mx-auto' : 'grid grid-cols-1 lg:grid-cols-12 gap-16'}`}>
-            
-            {/* Left Content / Main Form */}
-            <div className={currentStep === 3 ? '' : 'lg:col-span-8'}>
-              
-              {currentStep === 1 && (
-                <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="space-y-12">
-                  <h2 className="text-4xl font-serif font-bold text-gradient">Select Dates & Occupancy</h2>
-                  
-                  {/* Date Selection */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-4">
-                      <label className="text-[0.6rem] uppercase tracking-[0.4em] text-luxury-gold font-bold flex items-center gap-2">
-                        <Calendar size={14} /> Check-in
-                      </label>
-                      <div className="relative border-b border-gray-200 dark:border-white/10 pb-2 group focus-within:border-luxury-gold transition-colors">
-                        <input 
-                          type="date" 
-                          name="checkIn" 
-                          value={bookingData.checkIn} 
-                          onChange={handleChange} 
-                          onClick={(e) => { try { (e.currentTarget as any).showPicker(); } catch(err) {} }}
-                          className="w-full bg-transparent text-2xl outline-none cursor-pointer dark:text-white" 
-                        />
-                        <Calendar className="absolute right-0 top-1/2 -translate-y-1/2 w-5 h-5 text-luxury-gold opacity-50 pointer-events-none" />
-                      </div>
-                    </div>
-                    <div className="space-y-4">
-                      <label className="text-[0.6rem] uppercase tracking-[0.4em] text-luxury-gold font-bold flex items-center gap-2">
-                        <Calendar size={14} /> Check-out
-                      </label>
-                      <div className="relative border-b border-gray-200 dark:border-white/10 pb-2 group focus-within:border-luxury-gold transition-colors">
-                        <input 
-                          type="date" 
-                          name="checkOut" 
-                          value={bookingData.checkOut} 
-                          onChange={handleChange} 
-                          onClick={(e) => { try { (e.currentTarget as any).showPicker(); } catch(err) {} }}
-                          className="w-full bg-transparent text-2xl outline-none cursor-pointer dark:text-white" 
-                        />
-                        <Calendar className="absolute right-0 top-1/2 -translate-y-1/2 w-5 h-5 text-luxury-gold opacity-50 pointer-events-none" />
-                      </div>
-                    </div>
-                  </div>
+          <div className="flex flex-col gap-2 text-[0.7rem] uppercase tracking-[0.2em] text-gray-400 pt-8">
+            <p className="text-luxury-gold font-bold">Lift Service / Adapted Rooms</p>
+          </div>
+        </div>
 
-                  {/* Occupancy Selection */}
-                  <div className="grid grid-cols-2 gap-8">
-                    <div className="space-y-4">
-                      <label className="text-[0.6rem] uppercase tracking-[0.4em] text-luxury-gold font-bold flex items-center gap-2">
-                        <Users size={14} /> Adults
-                      </label>
-                      <select 
-                        name="adults" 
-                        value={bookingData.adults} 
-                        onChange={handleChange} 
-                        className="w-full bg-transparent border-b border-gray-200 dark:border-white/10 pb-4 text-xl outline-none focus:border-luxury-gold transition-colors dark:text-white appearance-none cursor-pointer"
-                      >
-                        {[1, 2, 3, 4, 5, 6].map(n => <option key={n} value={n} className="bg-white dark:bg-luxury-charcoal">{n} Adults</option>)}
-                        <option value="7+" className="bg-white dark:bg-luxury-charcoal">7+ Adults</option>
-                      </select>
-                    </div>
-                    <div className="space-y-4">
-                      <label className="text-[0.6rem] uppercase tracking-[0.4em] text-luxury-gold font-bold flex items-center gap-2">
-                        <Users size={14} /> Children
-                      </label>
-                      <select 
-                        name="children" 
-                        value={bookingData.children} 
-                        onChange={handleChange} 
-                        className="w-full bg-transparent border-b border-gray-200 dark:border-white/10 pb-4 text-xl outline-none focus:border-luxury-gold transition-colors dark:text-white appearance-none cursor-pointer"
-                      >
-                        {[0, 1, 2, 3, 4, 5, 6].map(n => <option key={n} value={n} className="bg-white dark:bg-luxury-charcoal">{n} Children</option>)}
-                        <option value="7+" className="bg-white dark:bg-luxury-charcoal">7+ Children</option>
-                      </select>
-                    </div>
-                  </div>
+        {/* Facilities Section (Image 1 Style) */}
+        <div className="lg:sticky lg:top-20 space-y-8">
+          <div className="space-y-4">
+            <h3 className="text-4xl font-serif font-bold tracking-widest uppercase text-white/90">FACILITIES</h3>
+            <div className="w-32 h-1 bg-luxury-gold" />
+          </div>
 
-                  {/* Room Selection */}
-                  <div className="space-y-6">
-                    <label className="text-[0.6rem] uppercase tracking-[0.4em] text-luxury-gold font-bold">Select Suite</label>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {roomTypes.map((room) => (
-                        <label key={room.id} className={`group cursor-pointer rounded-3xl border-2 p-6 transition-all duration-500 ${bookingData.roomType === room.id ? 'border-luxury-gold bg-luxury-gold/5' : 'border-gray-100 dark:border-white/5 hover:border-luxury-gold/30'}`}>
-                          <input type="radio" name="roomType" value={room.id} checked={bookingData.roomType === room.id} onChange={handleChange} className="sr-only" />
-                          <div className="aspect-video rounded-2xl overflow-hidden mb-6 shadow-xl">
-                            <img src={room.image} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                          </div>
-                          <div className="flex justify-between items-end">
-                            <div>
-                              <h3 className="text-xl font-bold font-serif mb-1">{room.name}</h3>
-                              <p className="text-luxury-gold font-bold">${room.price} <span className="text-xs text-gray-400 font-normal">/ Night</span></p>
-                            </div>
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${bookingData.roomType === room.id ? 'bg-luxury-gold text-black' : 'bg-gray-100 dark:bg-white/5 text-transparent'}`}>
-                              <Check size={18} />
-                            </div>
-                          </div>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
-                  <button onClick={handleNext} className="w-full bg-black dark:bg-white text-white dark:text-black font-bold py-6 rounded-2xl text-xl hover:scale-[1.02] active:scale-[0.98] transition-all shadow-2xl">
-                    Continue to Details
-                  </button>
-                </motion.div>
-              )}
-
-              {currentStep === 2 && (
-                <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-12">
-                  <button onClick={handleBack} className="text-luxury-gold flex items-center gap-2 font-bold uppercase tracking-widest text-xs hover:gap-4 transition-all">
-                    ← Back to selection
-                  </button>
-                  <h2 className="text-4xl font-serif font-bold text-gradient">Guest Information</h2>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <div className="space-y-4">
-                      <label className="text-[0.6rem] uppercase tracking-[0.4em] text-luxury-gold font-bold">Full Name</label>
-                      <input type="text" name="fullName" placeholder="John Doe" value={bookingData.fullName} onChange={handleChange} className="w-full bg-transparent border-b border-gray-200 dark:border-white/10 pb-4 text-xl outline-none focus:border-luxury-gold transition-colors dark:text-white" />
-                    </div>
-                    <div className="space-y-4">
-                      <label className="text-[0.6rem] uppercase tracking-[0.4em] text-luxury-gold font-bold">Email</label>
-                      <input type="email" name="email" placeholder="john@example.com" value={bookingData.email} onChange={handleChange} className="w-full bg-transparent border-b border-gray-200 dark:border-white/10 pb-4 text-xl outline-none focus:border-luxury-gold transition-colors dark:text-white" />
-                    </div>
-                    <div className="space-y-4">
-                      <label className="text-[0.6rem] uppercase tracking-[0.4em] text-luxury-gold font-bold">WhatsApp / Phone</label>
-                      <input type="tel" name="phone" placeholder="+91 00000 00000" value={bookingData.phone} onChange={handleChange} className="w-full bg-transparent border-b border-gray-200 dark:border-white/10 pb-4 text-xl outline-none focus:border-luxury-gold transition-colors dark:text-white" />
-                    </div>
-                    <div className="space-y-4">
-                      <label className="text-[0.6rem] uppercase tracking-[0.4em] text-luxury-gold font-bold">Special Requests</label>
-                      <textarea name="specialRequests" placeholder="Any specific needs?" value={bookingData.specialRequests} onChange={handleChange} className="w-full bg-transparent border-b border-gray-200 dark:border-white/10 pb-4 text-xl outline-none focus:border-luxury-gold transition-colors dark:text-white resize-none" rows={1} />
-                    </div>
-                  </div>
-
-                  <button onClick={handleSubmit} disabled={isSubmitting} className="w-full bg-luxury-gold text-black font-bold py-6 rounded-2xl text-xl hover:scale-[1.02] active:scale-[0.98] transition-all shadow-2xl">
-                    {isSubmitting ? 'Securing Sanctuary...' : 'Confirm Reservation'}
-                  </button>
-                </motion.div>
-              )}
-
-              {currentStep === 3 && (
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="pb-20 no-print">
-                  {/* Matches Step 3 UI with the Printable Design */}
-                  <div className="reservation-card-container relative bg-white text-black p-8 md:p-12 rounded-[2rem] shadow-2xl border-[12px] border-double border-luxury-gold/20 max-w-4xl mx-auto overflow-hidden">
-                    
-                    {/* Header: Logo & Contact */}
-                    <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12 border-b border-gray-100 pb-10">
-                      <div className="flex-shrink-0">
-                        <img src={IMAGES.logo} alt="The Indian Kargil" className="h-24 w-auto object-contain" />
-                      </div>
-                      <div className="text-right space-y-2 text-[0.7rem] uppercase tracking-widest text-gray-500">
-                        <div className="flex items-center justify-end gap-2"><MapPin size={12} className="text-luxury-gold" /> Kargil, Ladakh, J&K, India</div>
-                        <div className="flex items-center justify-end gap-2"><Phone size={12} className="text-luxury-gold" /> +91 12345 67890</div>
-                        <div className="flex items-center justify-end gap-2"><Mail size={12} className="text-luxury-gold" /> info@theindiankargil.com</div>
-                        <div className="flex items-center justify-end gap-2"><Globe size={12} className="text-luxury-gold" /> www.theindiankargil.com</div>
-                      </div>
-                    </div>
-
-                    {/* Title Section */}
-                    <div className="text-center mb-12">
-                      <h2 className="text-3xl md:text-4xl font-serif font-bold tracking-tight mb-4 text-luxury-charcoal flex items-center justify-center gap-4">
-                        <span className="h-px w-12 bg-luxury-gold/30" /> RESERVATION CONFIRMATION <span className="h-px w-12 bg-luxury-gold/30" />
-                      </h2>
-                      <div className="inline-block bg-luxury-gold text-white px-10 py-2 rounded-full text-xs font-bold uppercase tracking-[0.3em] mb-4 shadow-lg shadow-luxury-gold/20">
-                        Reservation Confirmed
-                      </div>
-                      <p className="text-xs text-gray-400 font-mono">Confirmation ID: <span className="text-black font-bold">{reservationId}</span></p>
-                    </div>
-
-                    {/* Information Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 mb-12">
-                      {/* Guest Details */}
-                      <div className="flex gap-4">
-                        <div className="w-12 h-12 rounded-full bg-luxury-gold/10 flex items-center justify-center text-luxury-gold"><Users size={20} /></div>
-                        <div>
-                          <p className="text-[0.6rem] uppercase tracking-widest text-luxury-gold font-bold mb-1">Guest Details</p>
-                          <p className="font-bold text-lg leading-tight">{bookingData.fullName}</p>
-                          <p className="text-xs text-gray-400 mt-1">{bookingData.email}</p>
-                          <p className="text-xs text-gray-400">{bookingData.phone}</p>
-                        </div>
-                      </div>
-
-                      {/* Check-In */}
-                      <div className="flex gap-4">
-                        <div className="w-12 h-12 rounded-full bg-luxury-gold/10 flex items-center justify-center text-luxury-gold"><Calendar size={20} /></div>
-                        <div>
-                          <p className="text-[0.6rem] uppercase tracking-widest text-luxury-gold font-bold mb-1">Check-In</p>
-                          <p className="font-bold text-lg leading-tight">{bookingData.checkIn}</p>
-                          <p className="text-xs text-gray-400 mt-1">After 2:00 PM</p>
-                        </div>
-                      </div>
-
-                      {/* Accommodation */}
-                      <div className="flex gap-4">
-                        <div className="w-12 h-12 rounded-full bg-luxury-gold/10 flex items-center justify-center text-luxury-gold"><Bed size={20} /></div>
-                        <div>
-                          <p className="text-[0.6rem] uppercase tracking-widest text-luxury-gold font-bold mb-1">Accommodation</p>
-                          <p className="font-bold text-lg leading-tight">{selectedRoom?.name}</p>
-                          <p className="text-xs text-gray-400 mt-1">{bookingData.adults} Adults, {bookingData.children} Children</p>
-                        </div>
-                      </div>
-
-                      {/* Check-Out */}
-                      <div className="flex gap-4">
-                        <div className="w-12 h-12 rounded-full bg-luxury-gold/10 flex items-center justify-center text-luxury-gold"><Calendar size={20} /></div>
-                        <div>
-                          <p className="text-[0.6rem] uppercase tracking-widest text-luxury-gold font-bold mb-1">Check-Out</p>
-                          <p className="font-bold text-lg leading-tight">{bookingData.checkOut}</p>
-                          <p className="text-xs text-gray-400 mt-1">Before 11:00 AM</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Pricing Summary Box */}
-                    <div className="relative bg-white border border-luxury-gold/20 rounded-2xl p-8 mb-12 shadow-sm">
-                      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-6">
-                         <h3 className="text-sm font-serif font-bold text-luxury-gold flex items-center gap-4">
-                            <span className="h-px w-6 bg-luxury-gold/30" /> PRICING SUMMARY <span className="h-px w-6 bg-luxury-gold/30" />
-                         </h3>
-                      </div>
-                      <div className="space-y-4">
-                        <div className="flex justify-between text-xs text-gray-500 uppercase tracking-widest">
-                          <span>Description</span>
-                          <span>Amount</span>
-                        </div>
-                        <div className="h-px bg-gray-100" />
-                        <div className="flex justify-between text-sm">
-                          <span>{nights} Nights Stay</span>
-                          <span className="font-bold">${subtotal.toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between text-sm text-gray-400 italic">
-                          <span>Taxes & Fees (12%)</span>
-                          <span>${taxes.toLocaleString()}</span>
-                        </div>
-                        <div className="h-px bg-gray-100" />
-                        <div className="flex justify-between items-end">
-                          <span className="font-serif text-lg font-bold">TOTAL AMOUNT</span>
-                          <span className="text-2xl font-serif font-bold text-luxury-gold">${total.toLocaleString()}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Important Notes */}
-                    <div className="bg-gray-50 rounded-2xl p-6 mb-12">
-                      <div className="flex items-center gap-3 mb-4 text-luxury-gold">
-                        <FileText size={18} />
-                        <h4 className="text-xs font-bold uppercase tracking-widest">Important Notes</h4>
-                      </div>
-                      <ul className="text-[0.7rem] text-gray-500 space-y-2 list-disc pl-4">
-                        <li>Check-in requires valid photo ID for all guests.</li>
-                        <li>Early check-in is subject to availability upon arrival.</li>
-                        <li>Cancellation policy as per hotel terms & conditions.</li>
-                      </ul>
-                    </div>
-
-                    {/* Footer Mountain Graphic Placeholder */}
-                    <div className="text-center pt-8 border-t border-gray-100 relative">
-                       <p className="font-serif italic text-2xl text-luxury-gold mb-2">Thank you</p>
-                       <p className="text-[0.6rem] uppercase tracking-[0.4em] text-gray-400">for choosing Hotel The Indian Kargil.</p>
-                       <div className="mt-4 flex justify-center opacity-10">
-                          <img src={IMAGES.booking.hero} className="h-20 w-full object-cover rounded-full blur-[2px]" />
-                       </div>
-                    </div>
-
-                    {/* Page Controls - Hidden in print */}
-                    <div className="mt-12 flex flex-col md:flex-row justify-center gap-4 no-print">
-                      <button onClick={handlePrint} className="flex items-center justify-center gap-2 px-10 py-4 bg-luxury-gold text-white rounded-full text-xs font-bold uppercase tracking-widest hover:scale-105 transition-all shadow-xl">
-                        Print Confirmation
-                      </button>
-                      <Link href="/" className="flex items-center justify-center gap-2 px-10 py-4 bg-luxury-charcoal text-white rounded-full text-xs font-bold uppercase tracking-widest hover:scale-105 transition-all shadow-xl">
-                        Back to Home
-                      </Link>
-                    </div>
-
-                  </div>
-                </motion.div>
-              )}
-            </div>
-
-            {/* Right Side Summary - Hidden in Step 3 */}
-            {currentStep < 3 && (
-              <div className="lg:col-span-4 relative">
-                <div className="sticky top-32 space-y-8">
-                  <div className="bg-white dark:bg-luxury-charcoal rounded-3xl p-8 border border-gray-100 dark:border-white/5 shadow-2xl space-y-8">
-                    <div className="flex gap-4 pb-6 border-b border-gray-100 dark:border-white/5">
-                      <div className="w-16 h-16 rounded-xl overflow-hidden shadow-lg">
-                        <img src={selectedRoom?.image} className="w-full h-full object-cover" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-sm">{selectedRoom?.name}</h4>
-                        <p className="text-xs text-gray-400">{nights} Night{nights > 1 ? 's' : ''}</p>
-                      </div>
-                    </div>
-
-                    <div className="space-y-4 pt-4">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-500">Accommodation</span>
-                        <span>${subtotal.toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-500">Taxes (12%)</span>
-                        <span>${taxes.toLocaleString()}</span>
-                      </div>
-                      <div className="pt-6 border-t border-gray-100 dark:border-white/5 flex justify-between font-bold text-xl">
-                        <span>Total</span>
-                        <span className="text-luxury-gold">${total.toLocaleString()}</span>
-                      </div>
-                    </div>
-                  </div>
+          <div className="grid grid-cols-1 gap-4">
+            {[
+              { icon: CarFront, label: 'Free Car Parking' },
+              { icon: Wifi, label: 'Free Wi-Fi' },
+              { icon: Map, label: 'Taxi for Sightseeing' },
+              { icon: Activity, label: 'Doctor on Call' },
+              { icon: Scissors, label: 'Laundry Service' },
+              { icon: Utensils, label: 'In House Luxury Restaurant' },
+            ].map((fac, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 * i }}
+                whileHover={{ x: 10, borderColor: 'rgba(184, 147, 75, 0.5)', backgroundColor: 'rgba(255, 255, 255, 0.08)' }}
+                className="flex items-center gap-6 p-6 border border-white/10 rounded-lg bg-white/5 transition-all group cursor-default"
+              >
+                <div className="w-12 h-12 rounded-full bg-luxury-gold/10 flex items-center justify-center group-hover:bg-luxury-gold/20 transition-colors">
+                  <fac.icon className="text-luxury-gold" size={24} />
                 </div>
-              </div>
-            )}
+                <span className="text-lg tracking-widest uppercase font-light">{fac.label}</span>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Final Printable Receipt - Isolated from animations - Matches the UI above */}
-      <div id="printable-receipt" className="hidden print:block bg-white text-black p-0 w-full">
-         <div className="reservation-card-container relative bg-white text-black p-12 border-[12px] border-double border-luxury-gold/20 w-full max-w-4xl mx-auto overflow-hidden">
-                    
-            {/* Header: Logo & Contact */}
-            <div className="flex justify-between items-start mb-12 border-b border-gray-100 pb-10">
-              <div className="flex-shrink-0">
-                <img src={IMAGES.logo} alt="The Indian Kargil" className="h-24 w-auto object-contain" />
+      {/* Room Tariff Section (Image 2 Style) */}
+      <section id="room-tariff" className="bg-white text-luxury-charcoal py-24 px-4 md:px-12 border-t border-luxury-gold/20">
+        <div className="max-w-6xl mx-auto space-y-16">
+          <div className="text-center space-y-4">
+            <p className="text-gray-400 tracking-[0.4em] text-xs uppercase font-bold">Hotel The Indian Ladakh — Kargil</p>
+            <h2 className="text-5xl md:text-7xl font-serif font-bold tracking-tight text-[#0b1527]">ROOM TARIFF</h2>
+            <div className="w-24 h-1 bg-luxury-gold mx-auto" />
+          </div>
+
+          {/* Desktop Table View */}
+          <div className="hidden lg:block overflow-x-auto rounded-2xl shadow-2xl border border-gray-100">
+            <table className="w-full border-collapse min-w-[800px]">
+              <thead>
+                <tr className="bg-gray-50/50">
+                  <th className="p-8 w-1/4"></th>
+                  {PLANS.map(plan => (
+                    <th key={plan.id} className="p-4">
+                      <div className="bg-[#0b1527] text-white p-6 rounded-xl space-y-2 shadow-xl border-t-2 border-luxury-gold">
+                        <p className="text-luxury-gold font-black text-2xl tracking-tighter">{plan.id}</p>
+                        <p className="text-[0.6rem] uppercase leading-tight font-bold opacity-80">{plan.desc}</p>
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {TARIFF_DATA.map((cat, ci) => (
+                  <React.Fragment key={ci}>
+                    {cat.items.map((item, ii) => (
+                      <tr key={item.name} className="group hover:bg-gray-50/80 transition-colors">
+                        <td className="p-8">
+                          <div className="space-y-1">
+                            {item.tag && <p className="text-orange-600 text-[0.65rem] font-black uppercase tracking-widest">{item.tag}</p>}
+                            <p className={`font-serif font-black ${cat.category === 'Extra Bed' ? 'text-green-700 text-lg' : 'text-2xl text-[#0b1527]'}`}>
+                              {item.name}
+                            </p>
+                          </div>
+                        </td>
+                        {PLANS.map(plan => {
+                          const isSelected = cat.category === 'Rooms' 
+                            ? (bookingData.roomType === item.name && bookingData.roomPlan === plan.id)
+                            : (bookingData.extraBedType === item.name && bookingData.extraBedPlan === plan.id);
+                          
+                          return (
+                            <td 
+                              key={plan.id} 
+                              onClick={() => handleSelectTariff(cat.category, item.name, plan.id)}
+                              className="p-8 text-center group/cell cursor-pointer relative"
+                            >
+                              <div className={`absolute inset-0 transition-colors ${isSelected ? 'bg-luxury-gold/10' : 'bg-luxury-gold/0 group-hover/cell:bg-luxury-gold/5'}`} />
+                              <div className="relative z-10 space-y-3">
+                                  <span className={`text-2xl font-serif font-bold transition-transform group-hover/cell:scale-110 block ${item.prices[plan.id as keyof typeof item.prices] === 'FREE' ? 'text-green-600 font-black' : 'text-[#0b1527]'}`}>
+                                    {item.prices[plan.id as keyof typeof item.prices] === 'FREE' ? 'FREE' : `₹ ${item.prices[plan.id as keyof typeof item.prices]?.toLocaleString()}`}
+                                  </span>
+                                  <div className={`inline-block text-[0.6rem] font-black uppercase tracking-widest px-4 py-1.5 rounded-full border transition-all duration-300 ${isSelected ? 'bg-luxury-gold text-white border-luxury-gold shadow-lg shadow-luxury-gold/30' : 'border-gray-200 text-gray-400 group-hover/cell:border-luxury-gold group-hover/cell:text-luxury-gold'}`}>
+                                      {isSelected ? 'Selected' : 'Select'}
+                                  </div>
+                              </div>
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    ))}
+                  </React.Fragment>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile Card View */}
+          <div className="lg:hidden space-y-8">
+            {TARIFF_DATA.map((cat, ci) => (
+              <div key={ci} className="space-y-4">
+                <h3 className="text-xs font-black uppercase tracking-[0.3em] text-luxury-gold px-2">
+                  {cat.category}
+                </h3>
+                {cat.items.map((item, ii) => (
+                  <div key={item.name} className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+                    <div className="p-6 bg-gray-50 border-b border-gray-100">
+                       {item.tag && <p className="text-orange-600 text-[0.6rem] font-black uppercase tracking-widest mb-1">{item.tag}</p>}
+                       <h4 className="font-serif font-black text-2xl text-[#0b1527]">{item.name}</h4>
+                    </div>
+                    <div className="p-4 grid grid-cols-2 gap-3">
+                       {PLANS.map(plan => {
+                         const isSelected = cat.category === 'Rooms' 
+                            ? (bookingData.roomType === item.name && bookingData.roomPlan === plan.id)
+                            : (bookingData.extraBedType === item.name && bookingData.extraBedPlan === plan.id);
+
+                         return (
+                           <div 
+                             key={plan.id}
+                             onClick={() => handleSelectTariff(cat.category, item.name, plan.id)}
+                             className={`p-4 rounded-2xl border transition-all text-center space-y-1 group active:scale-95 ${isSelected ? 'border-luxury-gold bg-luxury-gold/5 shadow-inner' : 'border-gray-100'}`}
+                           >
+                             <p className="text-luxury-gold font-black text-[0.6rem] tracking-widest">{plan.id}</p>
+                             <p className="text-[0.4rem] uppercase opacity-60 leading-tight font-black h-6 flex items-center justify-center">
+                               {plan.id === 'EP' ? 'Room Only' : plan.id === 'CP' ? '+ Breakfast' : plan.id === 'MAP' ? '+ B&D' : 'All Meals'}
+                             </p>
+                             <p className={`text-lg font-serif font-bold ${item.prices[plan.id as keyof typeof item.prices] === 'FREE' ? 'text-green-600' : 'text-[#0b1527]'}`}>
+                               {item.prices[plan.id as keyof typeof item.prices] === 'FREE' ? 'FREE' : `₹${item.prices[plan.id as keyof typeof item.prices]?.toLocaleString()}`}
+                             </p>
+                             <div className={`text-[0.5rem] font-black uppercase tracking-widest pt-2 transition-colors ${isSelected ? 'text-luxury-gold' : 'text-gray-300'}`}>
+                               {isSelected ? '✓ Selected' : 'Tap to Select'}
+                             </div>
+                           </div>
+                         );
+                       })}
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="text-right space-y-1 text-[0.65rem] uppercase tracking-widest text-gray-500">
-                <p>Kargil, Ladakh, J&K, India</p>
-                <p>+91 12345 67890</p>
-                <p>info@theindiankargil.com</p>
-                <p>www.theindiankargil.com</p>
+            ))}
+          </div>
+          <p className="text-center text-[0.7rem] text-gray-400 italic uppercase tracking-widest">* Click on any price to select your plan and continue to booking</p>
+        </div>
+      </section>
+
+      <section id="booking-form" className="py-32 px-4 bg-[#0b1527] relative overflow-hidden">
+        {/* Background Decorative Elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-luxury-gold/5 rounded-full blur-[100px] -mr-48 -mt-48" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-luxury-gold/5 rounded-full blur-[100px] -ml-48 -mb-48" />
+
+        <div className="max-w-6xl mx-auto space-y-16 relative z-10">
+          <div className="text-center space-y-4">
+            <h2 className="text-5xl font-serif font-bold text-luxury-gold">Secure Your Stay</h2>
+            <div className="w-20 h-1 bg-luxury-gold mx-auto" />
+            <p className="text-gray-400 uppercase tracking-widest text-xs font-bold">Reservation Request Form</p>
+          </div>
+
+          <div className="bg-[#0b1b36] border border-white/10 p-8 md:p-16 rounded-[2rem] shadow-2xl relative overflow-hidden group hover:border-luxury-gold/30 transition-colors duration-700">
+            {/* Subtle Inner Glow */}
+            <div className="absolute inset-0 bg-luxury-gold/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+            
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-16 relative z-10">
+            {/* Left Side: Stay Details */}
+            <div className="space-y-10">
+              <div className="space-y-6">
+                <label className="text-[0.7rem] uppercase tracking-[0.3em] text-luxury-gold font-black flex items-center gap-2">
+                  <Calendar size={14} /> Stay Dates
+                </label>
+                <div className="grid grid-cols-2 gap-8">
+                  <div className="space-y-2">
+                    <input 
+                      type="text" name="checkIn" required 
+                      placeholder="Check-In"
+                      onFocus={(e) => e.target.type = 'date'}
+                      onBlur={(e) => { if(!e.target.value) e.target.type = 'text' }}
+                      value={bookingData.checkIn} onChange={handleChange}
+                      className="w-full bg-transparent border-b border-white/10 py-4 outline-none focus:border-luxury-gold transition-colors text-lg"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <input 
+                      type="text" name="checkOut" required 
+                      placeholder="Check-Out"
+                      onFocus={(e) => e.target.type = 'date'}
+                      onBlur={(e) => { if(!e.target.value) e.target.type = 'text' }}
+                      value={bookingData.checkOut} onChange={handleChange}
+                      className="w-full bg-transparent border-b border-white/10 py-4 outline-none focus:border-luxury-gold transition-colors text-lg"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-12">
+                <div className="space-y-4">
+                  <label className="text-[0.7rem] uppercase tracking-[0.3em] text-luxury-gold font-black flex items-center gap-2">
+                    <Users size={14} /> Adults
+                  </label>
+                  <div className="flex items-center gap-4 bg-white/5 p-1 rounded-xl border border-white/10 w-fit">
+                    <button 
+                      type="button"
+                      onClick={() => setBookingData(prev => ({ ...prev, adults: Math.max(1, parseInt(prev.adults) - 1).toString() }))}
+                      className="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-luxury-gold hover:text-[#0b1527] transition-colors"
+                    >
+                      <Minus size={16} />
+                    </button>
+                    <span className="text-xl font-bold w-8 text-center">{bookingData.adults}</span>
+                    <button 
+                      type="button"
+                      onClick={() => setBookingData(prev => ({ ...prev, adults: Math.min(10, parseInt(prev.adults) + 1).toString() }))}
+                      className="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-luxury-gold hover:text-[#0b1527] transition-colors"
+                    >
+                      <Plus size={16} />
+                    </button>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <label className="text-[0.7rem] uppercase tracking-[0.3em] text-luxury-gold font-black flex items-center gap-2">
+                    <Users size={14} /> Children
+                  </label>
+                  <div className="flex items-center gap-4 bg-white/5 p-1 rounded-xl border border-white/10 w-fit">
+                    <button 
+                      type="button"
+                      onClick={() => setBookingData(prev => ({ ...prev, children: Math.max(0, parseInt(prev.children) - 1).toString() }))}
+                      className="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-luxury-gold hover:text-[#0b1527] transition-colors"
+                    >
+                      <Minus size={16} />
+                    </button>
+                    <span className="text-xl font-bold w-8 text-center">{bookingData.children}</span>
+                    <button 
+                      type="button"
+                      onClick={() => setBookingData(prev => ({ ...prev, children: Math.min(10, parseInt(prev.children) + 1).toString() }))}
+                      className="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-luxury-gold hover:text-[#0b1527] transition-colors"
+                    >
+                      <Plus size={16} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <label className="text-[0.7rem] uppercase tracking-[0.3em] text-luxury-gold font-black">Selection Summary</label>
+                <div className="space-y-3">
+                  {bookingData.roomType ? (
+                    <div className="p-6 border-2 border-luxury-gold/30 rounded-2xl bg-luxury-gold/5 flex justify-between items-center shadow-lg">
+                      <div>
+                        <p className="font-serif text-xl font-bold">{bookingData.roomType}</p>
+                        <p className="text-[0.7rem] text-gray-400 font-bold uppercase tracking-widest mt-1">
+                          {bookingData.roomPlan} Plan selected
+                        </p>
+                      </div>
+                      <div className="w-10 h-10 rounded-full bg-luxury-gold text-[#0b1527] flex items-center justify-center">
+                        <Check size={20} strokeWidth={3} />
+                      </div>
+                    </div>
+                  ) : (
+                    <div 
+                      onClick={() => document.getElementById('room-tariff')?.scrollIntoView({ behavior: 'smooth' })}
+                      className="p-6 border-2 border-dashed border-white/10 rounded-2xl bg-white/5 flex flex-col items-center justify-center cursor-pointer hover:border-luxury-gold/50 transition-colors"
+                    >
+                      <p className="text-[0.7rem] text-gray-500 font-black uppercase tracking-widest">No Room Selected</p>
+                      <p className="text-luxury-gold text-[0.6rem] uppercase tracking-widest mt-2 animate-pulse">Click to select a service ↑</p>
+                    </div>
+                  )}
+                  
+                  {bookingData.extraBedType && (
+                    <div className="p-6 border border-white/10 rounded-2xl bg-white/5 flex justify-between items-center">
+                      <div>
+                        <p className="font-serif text-lg font-bold">{bookingData.extraBedType}</p>
+                        <p className="text-[0.7rem] text-gray-500 font-bold uppercase tracking-widest mt-1">
+                          {bookingData.extraBedPlan} Plan added
+                        </p>
+                      </div>
+                      <div className="w-8 h-8 rounded-full border border-luxury-gold/50 text-luxury-gold flex items-center justify-center">
+                        <Check size={16} strokeWidth={3} />
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
-            {/* Title Section */}
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-serif font-bold tracking-tight mb-4 text-luxury-charcoal">
-                RESERVATION CONFIRMATION
-              </h2>
-              <div className="inline-block bg-luxury-gold text-white px-10 py-2 rounded-full text-xs font-bold uppercase tracking-[0.3em] mb-4">
-                Reservation Confirmed
-              </div>
-              <p className="text-xs text-gray-400 font-mono">Confirmation ID: <span className="text-black font-bold">{reservationId}</span></p>
-            </div>
-
-            {/* Information Grid */}
-            <div className="grid grid-cols-2 gap-x-12 gap-y-10 mb-12">
-              <div>
-                <p className="text-[0.6rem] uppercase tracking-widest text-luxury-gold font-bold mb-2">Guest Details</p>
-                <p className="font-bold text-lg">{bookingData.fullName}</p>
-                <p className="text-xs text-gray-500 mt-1">{bookingData.email}</p>
-                <p className="text-xs text-gray-500">{bookingData.phone}</p>
-              </div>
-              <div>
-                <p className="text-[0.6rem] uppercase tracking-widest text-luxury-gold font-bold mb-2">Check-In</p>
-                <p className="font-bold text-lg">{bookingData.checkIn}</p>
-                <p className="text-xs text-gray-500 mt-1">After 2:00 PM</p>
-              </div>
-              <div>
-                <p className="text-[0.6rem] uppercase tracking-widest text-luxury-gold font-bold mb-2">Accommodation</p>
-                <p className="font-bold text-lg">{selectedRoom?.name}</p>
-                <p className="text-xs text-gray-500 mt-1">{bookingData.adults} Adults, {bookingData.children} Children</p>
-              </div>
-              <div>
-                <p className="text-[0.6rem] uppercase tracking-widest text-luxury-gold font-bold mb-2">Check-Out</p>
-                <p className="font-bold text-lg">{bookingData.checkOut}</p>
-                <p className="text-xs text-gray-500 mt-1">Before 11:00 AM</p>
-              </div>
-            </div>
-
-            {/* Pricing Summary Box */}
-            <div className="relative border border-luxury-gold/20 rounded-2xl p-8 mb-12">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-6">
-                 <h3 className="text-[0.6rem] font-serif font-bold text-luxury-gold uppercase tracking-[0.3em]">Pricing Summary</h3>
+            {/* Right Side: Guest Details */}
+            <div className="space-y-10">
+              <div className="space-y-4">
+                <label className="text-[0.7rem] uppercase tracking-[0.3em] text-luxury-gold font-black">Full Name</label>
+                <input 
+                  type="text" name="fullName" placeholder="John Doe" required
+                  value={bookingData.fullName} onChange={handleChange}
+                  className="w-full bg-transparent border-b border-white/10 pb-4 outline-none focus:border-luxury-gold transition-colors text-xl"
+                />
               </div>
               <div className="space-y-4">
-                <div className="flex justify-between text-[0.6rem] text-gray-400 uppercase tracking-widest">
-                  <span>Description</span>
-                  <span>Amount</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span>{nights} Nights Stay</span>
-                  <span className="font-bold">${subtotal.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between text-xs text-gray-400">
-                  <span>Taxes & Fees (12%)</span>
-                  <span>${taxes.toLocaleString()}</span>
-                </div>
-                <div className="h-px bg-gray-100" />
-                <div className="flex justify-between items-end">
-                  <span className="font-serif text-lg font-bold">TOTAL AMOUNT</span>
-                  <span className="text-xl font-serif font-bold text-luxury-gold">${total.toLocaleString()}</span>
-                </div>
+                <label className="text-[0.7rem] uppercase tracking-[0.3em] text-luxury-gold font-black">WhatsApp Number</label>
+                <input 
+                  type="tel" name="phone" placeholder="Enter WhatsApp Number" required
+                  inputMode="numeric"
+                  maxLength={10}
+                  value={bookingData.phone} onChange={handleChange}
+                  className="w-full bg-transparent border-b border-white/10 pb-4 outline-none focus:border-luxury-gold transition-colors text-xl"
+                />
               </div>
-            </div>
+              <div className="space-y-4">
+                <label className="text-[0.7rem] uppercase tracking-[0.3em] text-luxury-gold font-black">Special Requests</label>
+                <textarea 
+                  name="specialRequests" placeholder="Tell us if you have any specific needs..." rows={4}
+                  value={bookingData.specialRequests} onChange={handleChange}
+                  className="w-full bg-transparent border-b border-white/10 pb-4 outline-none focus:border-luxury-gold transition-colors resize-none text-lg"
+                />
+              </div>
 
-            {/* Important Notes */}
-            <div className="bg-gray-50 rounded-xl p-6 mb-12">
-              <h4 className="text-[0.6rem] font-bold uppercase tracking-widest text-luxury-gold mb-3">Important Notes</h4>
-              <ul className="text-[0.65rem] text-gray-500 space-y-1 list-disc pl-4">
-                <li>Check-in requires valid photo ID.</li>
-                <li>Early check-in subject to availability.</li>
-                <li>Cancellation as per hotel terms.</li>
-              </ul>
+              <motion.button 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                type="submit" disabled={isSubmitting}
+                className="w-full bg-luxury-gold text-[#0b1527] font-black py-6 rounded-xl text-lg uppercase tracking-widest shadow-2xl disabled:opacity-50 transition-all flex items-center justify-center gap-3"
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-[#0b1527]/30 border-t-[#0b1527] rounded-full animate-spin" />
+                    Processing...
+                  </>
+                ) : 'Confirm Reservation Request'}
+              </motion.button>
             </div>
+          </form>
+        </div>
+      </div>
+    </section>
 
-            {/* Footer */}
-            <div className="text-center pt-8 border-t border-gray-100">
-               <p className="font-serif italic text-xl text-luxury-gold mb-1">Thank you</p>
-               <p className="text-[0.6rem] uppercase tracking-[0.4em] text-gray-400">for choosing Hotel The Indian Kargil.</p>
-            </div>
-          </div>
       </div>
 
+      {/* Confirmation Modal - Clean Layout Popup */}
+      {currentStep === 2 && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 bg-[#0b1527]/95 backdrop-blur-xl no-print">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 40 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            className="bg-white text-black w-full max-w-2xl rounded-[3rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] overflow-hidden relative flex flex-col max-h-[90vh]"
+          >
+            {/* Modal Header / Decoration */}
+            <div className="h-2 bg-luxury-gold w-full" />
+            
+            <div className="p-8 md:p-12 bg-white text-center">
+              {/* Screenshot Instruction */}
+              <div className="mb-8 bg-luxury-gold/10 py-3 px-6 rounded-full inline-block border border-luxury-gold/20">
+                <p className="text-luxury-gold text-[0.7rem] font-black uppercase tracking-[0.2em]">Please take a screenshot of this request</p>
+              </div>
+
+              {/* Success Icon */}
+              <div className="w-16 h-16 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-8">
+                <Check size={32} strokeWidth={3} />
+              </div>
+
+              <h2 className="text-2xl font-serif font-black text-luxury-charcoal mb-8">Reservation Request Confirmed</h2>
+
+              {/* Request Details for Screenshot */}
+              <div className="max-w-md mx-auto bg-gray-50 rounded-3xl p-8 space-y-6 text-left border border-gray-100 shadow-sm mb-10">
+                <div className="flex justify-between items-center border-b border-gray-200 pb-4">
+                  <span className="text-[0.6rem] uppercase font-black text-gray-400 tracking-widest">Request No</span>
+                  <span className="font-black text-luxury-gold">{reservationId}</span>
+                </div>
+                <div className="flex justify-between items-center border-b border-gray-200 pb-4">
+                  <span className="text-[0.6rem] uppercase font-black text-gray-400 tracking-widest">Name</span>
+                  <span className="font-bold text-gray-800">{bookingData.fullName}</span>
+                </div>
+                <div className="flex justify-between items-center border-b border-gray-200 pb-4">
+                  <span className="text-[0.6rem] uppercase font-black text-gray-400 tracking-widest">Phone</span>
+                  <span className="font-bold text-gray-800">{bookingData.phone}</span>
+                </div>
+                <div className="flex justify-between items-center border-b border-gray-200 pb-4">
+                  <span className="text-[0.6rem] uppercase font-black text-gray-400 tracking-widest">Guests</span>
+                  <span className="font-bold text-gray-800">{parseInt(bookingData.adults) + parseInt(bookingData.children)} Persons</span>
+                </div>
+                <div className="flex justify-between items-start">
+                  <span className="text-[0.6rem] uppercase font-black text-gray-400 tracking-widest pt-1">Service</span>
+                  <div className="text-right">
+                    <p className="font-bold text-gray-800">{bookingData.roomType}</p>
+                    <p className="text-[0.6rem] font-black uppercase text-luxury-gold">{bookingData.roomPlan} Plan</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="no-print">
+                <button 
+                  onClick={() => setCurrentStep(1)}
+                  className="w-full bg-[#0b1527] text-white py-5 rounded-2xl text-xs font-black uppercase tracking-widest hover:scale-[1.02] transition-all shadow-xl"
+                >
+                  Close & Back to Home
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
       <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;700;900&display=swap');
+        
+        body { font-family: 'Inter', sans-serif; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        
+        input[type="date"]::-webkit-calendar-picker-indicator {
+          filter: invert(1);
+          opacity: 0.5;
+          cursor: pointer;
+        }
+
+        .custom-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(184, 147, 75, 0.3) transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(184, 147, 75, 0.2);
+          border-radius: 20px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(184, 147, 75, 0.5);
+        }
+
         @media print {
-          /* Kill everything else */
-          body > *:not(#printable-receipt) {
+          /* Force hide the massive 300vh container and everything else */
+          .no-print, .cinematic-hero, section, footer, nav {
             display: none !important;
-          }
-          nav, footer, .no-print, .cinematic-hero, .booking-content-section {
-            display: none !important;
-          }
-          
-          /* Force receipt to show */
-          #printable-receipt {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            position: absolute !important;
-            left: 0 !important;
-            top: 0 !important;
-            width: 100% !important;
+            height: 0 !important;
             margin: 0 !important;
             padding: 0 !important;
           }
 
-          html, body {
+          html, body { 
+            height: auto !important; 
+            overflow: visible !important;
             background: white !important;
-            height: auto !important;
+            color: black !important;
             margin: 0 !important;
             padding: 0 !important;
+          }
+
+          /* Ensure ONLY the printable area is shown and takes zero space from parents */
+          #printable-area {
+            display: block !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: auto !important;
+            margin: 0 !important;
+            padding: 15mm !important;
+            background: white !important;
+            z-index: 9999 !important;
+            border: none !important;
+            box-shadow: none !important;
+          }
+
+          /* Clean up the text for ink-saving and sharpness */
+          #printable-area * {
+            color: black !important;
+            text-shadow: none !important;
+            box-shadow: none !important;
+          }
+
+          /* Force single page at the browser level */
+          @page {
+            size: A4;
+            margin: 0;
           }
         }
       `}</style>

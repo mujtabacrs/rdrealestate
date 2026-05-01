@@ -72,11 +72,11 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
                 <Phone size={18} className="text-luxury-gold" />
-                <span>+91 1985 232022</span>
+                <span>+91 97961 11172</span>
               </div>
               <div className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
                 <Mail size={18} className="text-luxury-gold" />
-                <span>info@theindiankargil.com</span>
+                <span>admin.thindiankargil@gmail.com</span>
               </div>
             </div>
           </div>

@@ -2,17 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, MessageSquare, Send } from 'lucide-react';
+import { X, Send } from 'lucide-react';
 
 export default function QuickEnquiry() {
-  type Mode = 'none' | 'enquiry' | 'whatsapp';
+  type Mode = 'none' | 'whatsapp';
   const [activeMode, setActiveMode] = useState<Mode>('none');
   const [hasMounted, setHasMounted] = useState(false);
-  const [name, setName] = useState('');
-  const [contact, setContact] = useState('');
-  const [submitted, setSubmitted] = useState(false);
   const [waMessage, setWaMessage] = useState(
-    "Hi Hotel Kargil! I'm interested in booking a stay. Could you help me with some details?"
+    "Hi Hotel The Indian, Kargil! I'm interested in booking a stay. Could you help me with some details?"
   );
 
   const [shouldFlicker, setShouldFlicker] = useState(false);
@@ -29,40 +26,11 @@ export default function QuickEnquiry() {
 
   if (!hasMounted) return null;
 
-  const handleEnquirySubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (name && contact) {
-      try {
-        const response = await fetch('/api/leads/enquiry', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, contact })
-        });
-
-        if (!response.ok) throw new Error('Network error');
-
-        setSubmitted(true);
-        setTimeout(() => {
-          setActiveMode('none');
-          // Reset form after closing
-          setTimeout(() => {
-            setSubmitted(false);
-            setName('');
-            setContact('');
-          }, 500);
-        }, 2000);
-      } catch (error) {
-        console.error("Submission failed:", error);
-        alert("Failed to submit enquiry. Please try again.");
-      }
-    }
-  };
-
   const handleWaSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (waMessage) {
       const text = encodeURIComponent(waMessage);
-      window.open(`https://wa.me/918082745614?text=${text}`, '_blank');
+      window.open(`https://wa.me/919796111172?text=${text}`, '_blank');
       setActiveMode('none');
     }
   };
@@ -78,7 +46,7 @@ export default function QuickEnquiry() {
             transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 1 }}
             className="fixed bottom-6 right-6 z-50"
           >
-            <div className={`flex flex-col gap-4 ${shouldFlicker ? 'animate-bounce' : ''}`}>
+            <div className={`${shouldFlicker ? 'animate-bounce' : ''}`}>
               {/* WhatsApp Floating Button */}
               <button
                 onClick={() => setActiveMode('whatsapp')}
@@ -89,22 +57,13 @@ export default function QuickEnquiry() {
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
                 </svg>
               </button>
-
-              {/* Quick Enquiry Floating Button */}
-              <button
-                onClick={() => setActiveMode('enquiry')}
-                className="flex h-14 w-14 items-center justify-center rounded-full bg-luxury-gold text-white shadow-lg shadow-black/20 transition-transform hover:scale-110 active:scale-95"
-                aria-label="Open Enquiry"
-              >
-                <MessageSquare size={24} />
-              </button>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
       <AnimatePresence>
-        {activeMode !== 'none' && (
+        {activeMode === 'whatsapp' && (
           <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -115,12 +74,10 @@ export default function QuickEnquiry() {
             {/* Header */}
             <div className="flex items-center justify-between bg-white/5 px-6 py-4 border-b border-white/10">
               <h3 className="font-outfit text-lg font-medium text-white flex items-center gap-2">
-                {activeMode === 'whatsapp' && (
-                  <svg viewBox="0 0 24 24" fill="#25D366" className="h-5 w-5">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
-                  </svg>
-                )}
-                {activeMode === 'enquiry' ? 'Quick Enquiry' : 'Message on WhatsApp'}
+                <svg viewBox="0 0 24 24" fill="#25D366" className="h-5 w-5">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+                </svg>
+                Message on WhatsApp
               </h3>
               <button
                 onClick={() => setActiveMode('none')}
@@ -133,99 +90,29 @@ export default function QuickEnquiry() {
 
             {/* Content */}
             <div className="p-6">
-              {activeMode === 'whatsapp' && (
-                <form onSubmit={handleWaSubmit} className="flex flex-col space-y-4">
-                  <div className="space-y-1">
-                    <label htmlFor="waMessage" className="text-xs uppercase tracking-wider text-white/50">
-                      Message
-                    </label>
-                    <textarea
-                      id="waMessage"
-                      rows={4}
-                      required
-                      value={waMessage}
-                      onChange={(e) => setWaMessage(e.target.value)}
-                      className="w-full resize-none rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-white/50 outline-none transition-colors focus:border-[#25D366] focus:bg-white/10"
-                      placeholder="Type your message..."
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="mt-2 w-full rounded-lg bg-[#25D366] py-3 text-sm font-medium text-white transition-all hover:bg-[#25D366]/90 hover:shadow-lg hover:shadow-[#25D366]/20 active:scale-[0.98] flex justify-center items-center gap-2"
-                  >
-                    Send to WhatsApp
-                    <Send size={16} />
-                  </button>
-                </form>
-              )}
-
-              {activeMode === 'enquiry' && (
-                <>
-                  {submitted ? (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="flex flex-col items-center justify-center py-6 text-center text-white"
-                    >
-                      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-luxury-gold/20 text-luxury-gold">
-                        <Send size={20} />
-                      </div>
-                      <p className="font-outfit text-lg">Thank you!</p>
-                      <p className="text-sm text-white/60 mt-1">We'll get back to you shortly.</p>
-                    </motion.div>
-                  ) : (
-                    <form onSubmit={handleEnquirySubmit} className="flex flex-col space-y-4">
-                      <div className="space-y-1">
-                        <label htmlFor="name" className="text-xs uppercase tracking-wider text-white/50">
-                          Name
-                        </label>
-                        <input
-                          id="name"
-                          type="text"
-                          required
-                          value={name}
-                          onChange={(e) => {
-                            const val = e.target.value;
-                            if (/^[a-zA-Z\s]*$/.test(val)) {
-                              setName(val);
-                            }
-                          }}
-                          className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-white/30 outline-none transition-colors focus:border-luxury-gold focus:bg-white/10"
-                          placeholder="Your Name"
-                        />
-                      </div>
-                      <div className="space-y-1">
-                        <label htmlFor="contact" className="text-xs uppercase tracking-wider text-white/50">
-                          Contact
-                        </label>
-                        <input
-                          id="contact"
-                          type="tel"
-                          required
-                          value={contact}
-                          onChange={(e) => {
-                            const val = e.target.value;
-                            if (/^\d{0,10}$/.test(val)) {
-                              setContact(val);
-                            }
-                          }}
-                          minLength={10}
-                          maxLength={10}
-                          pattern="\d{10}"
-                          className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-white/30 outline-none transition-colors focus:border-luxury-gold focus:bg-white/10"
-                          placeholder="10-digit Phone Number"
-                        />
-                      </div>
-                      <button
-                        type="submit"
-                        className="mt-2 w-full rounded-lg bg-luxury-gold py-3 text-sm font-medium text-white transition-all hover:bg-luxury-gold/90 hover:shadow-lg hover:shadow-luxury-gold/20 active:scale-[0.98]"
-                      >
-                        Submit Enquiry
-                      </button>
-                    </form>
-                  )}
-                </>
-              )}
+              <form onSubmit={handleWaSubmit} className="flex flex-col space-y-4">
+                <div className="space-y-1">
+                  <label htmlFor="waMessage" className="text-xs uppercase tracking-wider text-white/50">
+                    Message
+                  </label>
+                  <textarea
+                    id="waMessage"
+                    rows={4}
+                    required
+                    value={waMessage}
+                    onChange={(e) => setWaMessage(e.target.value)}
+                    className="w-full resize-none rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-white/50 outline-none transition-colors focus:border-[#25D366] focus:bg-white/10"
+                    placeholder="Type your message..."
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="mt-2 w-full rounded-lg bg-[#25D366] py-3 text-sm font-medium text-white transition-all hover:bg-[#25D366]/90 hover:shadow-lg hover:shadow-[#25D366]/20 active:scale-[0.98] flex justify-center items-center gap-2"
+                >
+                  Send to WhatsApp
+                  <Send size={16} />
+                </button>
+              </form>
             </div>
           </motion.div>
         )}

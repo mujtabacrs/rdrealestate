@@ -62,6 +62,10 @@ export default function About() {
                   modern sophistication. Every detail has been carefully curated to ensure that our guests experience 
                   nothing short of perfection.
                 </p>
+                <p className="text-lg italic text-luxury-gold/90 border-l-2 border-luxury-gold/30 pl-6">
+                  The property has been recently renovated by Kiffayat Jaffri Constructions and Services (72) Private Limited 
+                  and was taken over by Tabasum Kiffayat in April 2026.
+                </p>
                 <p className="text-lg">
                   From our award-winning spa and world-class dining to our meticulously designed suites and personalized 
                   service, we believe that luxury is not just about amenities—it's about creating moments that last a lifetime.
@@ -157,10 +161,10 @@ export default function About() {
                   
                   <div className="text-right">
                     <div className="text-luxury-gold font-serif text-2xl mb-1">
-                      Kiffayat Jaffri
+                      Tabasum Kiffayat
                     </div>
                     <div className="text-gray-400">
-                      Founder & Owner
+                      Owner
                     </div>
                   </div>
                 </div>

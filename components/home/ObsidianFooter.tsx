@@ -67,8 +67,11 @@ const ObsidianFooter = () => {
 
           <div className="md:col-span-4 flex flex-col items-end text-right">
              <span className="text-[0.5rem] uppercase tracking-[0.4em] text-foreground-rgb/30 mb-4">Inquiries</span>
-             <a href="mailto:origin@luxehaven.com" className="font-editorial text-2xl text-foreground-rgb hover:text-c-gold transition-colors italic">
-               origin@luxehaven.com
+             <a href="mailto:admin.thindiankargil@gmail.com" className="font-editorial text-2xl text-foreground-rgb hover:text-c-gold transition-colors italic">
+               admin.thindiankargil@gmail.com
+             </a>
+             <a href="tel:+919796111172" className="font-editorial text-xl text-foreground-rgb hover:text-c-gold transition-colors mt-2">
+               +91 97961 11172
              </a>
           </div>
 
@@ -80,7 +83,7 @@ const ObsidianFooter = () => {
             &copy; 2026 Hotel Kargil. All Rights Reserved.
           </p>
           <div className="flex items-center gap-8">
-            <span className="text-[0.5rem] uppercase tracking-[0.4em] text-foreground-rgb/30">Imagine Possible</span>
+            <span className="text-[0.5rem] uppercase tracking-[0.4em] text-foreground-rgb/30">Experience Kargil</span>
             {/* Rocky Texture Asset Placeholder */}
             <div className="w-12 h-12 bg-c-black arch-mask opacity-20 grayscale" />
           </div>
