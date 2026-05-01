@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { sendWhatsAppNotification } from '@/utils/whatsappService';
+import { notifyAdmins, sendWhatsAppMessage } from '@/utils/whatsappService';
 
 export async function POST(request: Request) {
   try {
@@ -14,17 +14,33 @@ export async function POST(request: Request) {
       );
     }
 
-    // Format the message
-    const waMessage = `📧 *New Contact Inquiry* 📧\n\n*Name:* ${name}\n*Email:* ${email}\n*Phone:* ${phone}\n\n*Message:*\n${message}\n\n_Please follow up with the guest._`;
+    // Format the message for admins
+    const waAdminMessage = `📧 *New Contact Inquiry* 📧\n\n*Name:* ${name}\n*Email:* ${email}\n*Phone:* ${phone}\n\n*Message:*\n${message}\n\n_Please follow up with the guest._`;
 
-    // Send the notification
-    const result = await sendWhatsAppNotification(waMessage);
+    // Format the message for the user
+    const waUserMessage = `Hello ${name}! \n\nThank you for contacting Hotel The Indian, Kargil. We have received your inquiry. \n\nOur team will get back to you shortly.`;
 
-    if (result.success) {
-      return NextResponse.json({ success: true, message: 'Inquiry sent to WhatsApp.' });
+    // Send notifications to admins
+    const adminResults = await notifyAdmins(waAdminMessage, name);
+
+    // Send confirmation to the user
+    const userResult = await sendWhatsAppMessage({
+      phone,
+      message: waUserMessage,
+      name
+    });
+
+    const allSuccessful = adminResults.every(r => r.success) && userResult.success;
+
+    if (allSuccessful) {
+      return NextResponse.json({ success: true, message: 'Inquiry received and notifications sent.' });
     } else {
-      console.error('Failed to send WhatsApp message', result.error);
-      return NextResponse.json({ success: false, message: 'Failed to notify admin.' }, { status: 500 });
+      console.error('Some WhatsApp messages failed to send', { adminResults, userResult });
+      return NextResponse.json({
+        success: true,
+        message: 'Inquiry received, but some notifications may have failed.',
+        details: { adminResults, userResult }
+      });
     }
   } catch (error) {
     console.error('API Error:', error);

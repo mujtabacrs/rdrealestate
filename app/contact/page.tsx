@@ -71,20 +71,27 @@ export default function Contact() {
   ]
 
   return (
-    <div className="min-h-screen pt-20 bg-white dark:bg-luxury-dark">
+    <div className="min-h-screen bg-white dark:bg-luxury-dark">
       {/* Hero Section */}
-      <section className="py-24 text-center bg-gray-50 dark:bg-luxury-charcoal">
+      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-luxury-charcoal">
+        <div className="absolute inset-0 z-0 opacity-30">
+          <img 
+            src="https://images.unsplash.com/photo-1590523278191-995cbcda646b?auto=format&fit=crop&q=80"
+            alt="Contact Background"
+            className="w-full h-full object-cover grayscale"
+          />
+        </div>
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="max-w-4xl mx-auto px-4"
+          className="relative z-10 max-w-4xl mx-auto px-4 text-center"
         >
-          <h1 className="text-5xl md:text-7xl font-serif font-bold text-gradient mb-6">
+          <h1 className="text-6xl md:text-8xl font-serif font-bold text-luxury-gold mb-6">
             Contact Us
           </h1>
-          <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed">
-            We're here to make your luxury experience unforgettable
+          <p className="text-xl md:text-2xl text-gray-300 leading-relaxed uppercase tracking-[0.3em]">
+            Himalayan Hospitality Awaits
           </p>
         </motion.div>
       </section>

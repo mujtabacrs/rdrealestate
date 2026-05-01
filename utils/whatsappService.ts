@@ -4,17 +4,22 @@
  * once the API key is secured.
  */
 
-export const sendWhatsAppNotification = async (messageText: string) => {
-  // TODO: Add these environment variables to your .env.local file
-  const WHATSAPP_API_TOKEN = process.env.WHATSAPP_API_TOKEN || '';
-  const WHATSAPP_PHONE_NUMBER_ID = process.env.WHATSAPP_PHONE_NUMBER_ID || '';
-  
-  // The phone number that will receive the leads. Can also be in .env.local
-  const RECIPIENT_NUMBER = process.env.ADMIN_WHATSAPP_NUMBER || '918082745614';
+/**
+ * Utility Service for interacting with internal WhatsApp API tool
+ */
 
-  if (!WHATSAPP_API_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
-    console.warn("WhatsApp API key not configured. Mocking API call to number:", RECIPIENT_NUMBER);
-    console.log("Mock WhatsApp Message Payload:", messageText);
+export interface WhatsAppMessageParams {
+  phone: string;
+  message: string;
+  name: string;
+}
+
+export const sendWhatsAppMessage = async ({ phone, message, name }: WhatsAppMessageParams) => {
+  const WHATSAPP_API_TOKEN = process.env.WHATSAPP_API_TOKEN || '';
+  
+  if (!WHATSAPP_API_TOKEN) {
+    console.warn("WhatsApp API key not configured. Mocking API call to number:", phone);
+    console.log("Mock WhatsApp Message Payload:", { phone, message, name });
     
     // Simulate a network delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -24,34 +29,52 @@ export const sendWhatsAppNotification = async (messageText: string) => {
   const url = `https://api.waibusiness.com/messages/m`;
 
   try {
+    const payload = {
+      phone: phone.startsWith('+') ? phone : `+${phone.replace(/\D/g, '')}`, // Ensure format like +1234567890
+      type: "text",
+      message: message,
+      name: name,
+      messageType: "notification",
+      priority: "normal"
+    };
+
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'x-api-key': WHATSAPP_API_TOKEN,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        messaging_product: "whatsapp",
-        recipient_type: "individual",
-        to: RECIPIENT_NUMBER,
-        type: "text",
-        text: {
-          preview_url: false,
-          body: messageText
-        }
-      })
+      body: JSON.stringify(payload)
     });
 
     const data = await response.json();
     
     if (!response.ok) {
       console.error("WhatsApp API Error Response:", data);
-      throw new Error(data.error?.message || 'Failed to send WhatsApp message');
+      return { success: false, error: data };
     }
 
     return { success: true, data };
   } catch (error) {
-    console.error("Error sending WhatsApp notification:", error);
+    console.error("Error sending WhatsApp message:", error);
     return { success: false, error };
   }
+}
+
+/**
+ * Helper to send a message to all admins defined in environment variables
+ */
+export const notifyAdmins = async (message: string, guestName: string) => {
+  const adminNumbers = (process.env.ADMIN_WHATSAPP_NUMBER || '').split(',').map(n => n.trim()).filter(Boolean);
+  
+  if (adminNumbers.length === 0) {
+    console.warn("No admin WhatsApp numbers configured in ADMIN_WHATSAPP_NUMBER");
+    return [];
+  }
+
+  const results = await Promise.all(
+    adminNumbers.map(phone => sendWhatsAppMessage({ phone, message, name: guestName }))
+  );
+
+  return results;
 }

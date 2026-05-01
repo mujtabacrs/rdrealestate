@@ -51,18 +51,11 @@ const ObsidianFooter = () => {
             </p>
           </div>
 
-          <div className="md:col-span-4 grid grid-cols-2 gap-8">
-            <div className="flex flex-col gap-4">
-              <span className="text-[0.5rem] uppercase tracking-[0.4em] text-foreground-rgb/30 mb-2">Explore</span>
-              <Link href="/gallery" className="text-xs uppercase tracking-widest text-foreground-rgb hover:text-c-gold transition-colors">The Collection</Link>
-              <Link href="/about" className="text-xs uppercase tracking-widest text-foreground-rgb hover:text-c-gold transition-colors">Our Origin</Link>
-              <Link href="/booking" className="text-xs uppercase tracking-widest text-foreground-rgb hover:text-c-gold transition-colors">Availability</Link>
-            </div>
-            <div className="flex flex-col gap-4">
-              <span className="text-[0.5rem] uppercase tracking-[0.4em] text-foreground-rgb/30 mb-2">Social</span>
-              <Link href="#" className="text-xs uppercase tracking-widest text-foreground-rgb/40 cursor-not-allowed">Instagram</Link>
-              <Link href="#" className="text-xs uppercase tracking-widest text-foreground-rgb/40 cursor-not-allowed">Twitter</Link>
-            </div>
+          <div className="md:col-span-4 flex flex-col gap-4">
+            <span className="text-[0.5rem] uppercase tracking-[0.4em] text-foreground-rgb/30 mb-2">Explore</span>
+            <Link href="/gallery" className="text-xs uppercase tracking-widest text-foreground-rgb hover:text-c-gold transition-colors">The Collection</Link>
+            <Link href="/about" className="text-xs uppercase tracking-widest text-foreground-rgb hover:text-c-gold transition-colors">Our Origin</Link>
+            <Link href="/booking" className="text-xs uppercase tracking-widest text-foreground-rgb hover:text-c-gold transition-colors">Availability</Link>
           </div>
 
           <div className="md:col-span-4 flex flex-col items-end text-right">

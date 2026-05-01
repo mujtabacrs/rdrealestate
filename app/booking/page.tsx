@@ -2,11 +2,12 @@
 
 import React, { useState, useRef } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { 
   Calendar, Users, Bed, Wifi, Car, Coffee, Star, Check, MapPin, 
   Phone, Mail, Globe, FileText, ChevronRight, ShieldCheck, 
-  CarFront, Map, Activity, Utensils, Scissors, Plus, Minus
+  CarFront, Map, Activity, Utensils, Scissors, Plus, Minus, X
 } from 'lucide-react'
 import { IMAGES } from '@/config/images'
 
@@ -67,6 +68,7 @@ const PLANS = [
 
 
 export default function Booking() {
+  const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1)
   const [bookingData, setBookingData] = useState({
     checkIn: '',
@@ -641,63 +643,71 @@ export default function Booking() {
 
       {/* Confirmation Modal - Clean Layout Popup */}
       {currentStep === 2 && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 bg-[#0b1527]/95 backdrop-blur-xl no-print">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-[#0b1527]/95 backdrop-blur-xl no-print">
           <motion.div 
             initial={{ opacity: 0, scale: 0.9, y: 40 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            className="bg-white text-black w-full max-w-2xl rounded-[3rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] overflow-hidden relative flex flex-col max-h-[90vh]"
+            className="bg-white text-black w-full max-w-md rounded-[2.5rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] overflow-hidden relative flex flex-col max-h-[90vh]"
           >
             {/* Modal Header / Decoration */}
-            <div className="h-2 bg-luxury-gold w-full" />
+            <div className="h-2 bg-luxury-gold w-full relative">
+              <button 
+                onClick={() => router.push('/')}
+                className="absolute top-4 right-4 w-8 h-8 bg-black/5 hover:bg-black/10 rounded-full flex items-center justify-center transition-colors z-20"
+              >
+                <X size={16} className="text-gray-400" />
+              </button>
+            </div>
             
-            <div className="p-8 md:p-12 bg-white text-center">
+            <div className="p-6 bg-white text-center relative">
               {/* Screenshot Instruction */}
-              <div className="mb-8 bg-luxury-gold/10 py-3 px-6 rounded-full inline-block border border-luxury-gold/20">
-                <p className="text-luxury-gold text-[0.7rem] font-black uppercase tracking-[0.2em]">Please take a screenshot of this request</p>
+              <div className="mb-4 bg-luxury-gold/10 py-2 px-4 rounded-full inline-block border border-luxury-gold/20">
+                <p className="text-luxury-gold text-[0.6rem] font-black uppercase tracking-[0.2em]">Take a screenshot of this request</p>
               </div>
 
               {/* Success Icon */}
-              <div className="w-16 h-16 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-8">
-                <Check size={32} strokeWidth={3} />
+              <div className="w-10 h-10 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Check size={20} strokeWidth={3} />
               </div>
 
-              <h2 className="text-2xl font-serif font-black text-luxury-charcoal mb-8">Reservation Request Confirmed</h2>
+              <h2 className="text-lg font-serif font-black text-luxury-charcoal mb-4">Request Confirmed</h2>
 
               {/* Request Details for Screenshot */}
-              <div className="max-w-md mx-auto bg-gray-50 rounded-3xl p-8 space-y-6 text-left border border-gray-100 shadow-sm mb-10">
-                <div className="flex justify-between items-center border-b border-gray-200 pb-4">
+              <div className="max-w-md mx-auto bg-gray-50 rounded-2xl p-5 space-y-3 text-left border border-gray-100 shadow-sm mb-6">
+                <div className="flex justify-between items-center border-b border-gray-200 pb-3">
                   <span className="text-[0.6rem] uppercase font-black text-gray-400 tracking-widest">Request No</span>
-                  <span className="font-black text-luxury-gold">{reservationId}</span>
+                  <span className="font-black text-luxury-gold text-sm">{reservationId}</span>
                 </div>
-                <div className="flex justify-between items-center border-b border-gray-200 pb-4">
+                <div className="flex justify-between items-center border-b border-gray-200 pb-3">
                   <span className="text-[0.6rem] uppercase font-black text-gray-400 tracking-widest">Name</span>
-                  <span className="font-bold text-gray-800">{bookingData.fullName}</span>
+                  <span className="font-bold text-gray-800 text-sm">{bookingData.fullName}</span>
                 </div>
-                <div className="flex justify-between items-center border-b border-gray-200 pb-4">
+                <div className="flex justify-between items-center border-b border-gray-200 pb-3">
                   <span className="text-[0.6rem] uppercase font-black text-gray-400 tracking-widest">Phone</span>
-                  <span className="font-bold text-gray-800">{bookingData.phone}</span>
+                  <span className="font-bold text-gray-800 text-sm">{bookingData.phone}</span>
                 </div>
-                <div className="flex justify-between items-center border-b border-gray-200 pb-4">
+                <div className="flex justify-between items-center border-b border-gray-200 pb-3">
                   <span className="text-[0.6rem] uppercase font-black text-gray-400 tracking-widest">Guests</span>
-                  <span className="font-bold text-gray-800">{parseInt(bookingData.adults) + parseInt(bookingData.children)} Persons</span>
+                  <span className="font-bold text-gray-800 text-sm">{parseInt(bookingData.adults) + parseInt(bookingData.children)} Persons</span>
                 </div>
-                <div className="flex justify-between items-start">
+                <div className="flex justify-between items-start border-b border-gray-200 pb-3">
                   <span className="text-[0.6rem] uppercase font-black text-gray-400 tracking-widest pt-1">Service</span>
                   <div className="text-right">
-                    <p className="font-bold text-gray-800">{bookingData.roomType}</p>
+                    <p className="font-bold text-gray-800 text-sm">{bookingData.roomType}</p>
                     <p className="text-[0.6rem] font-black uppercase text-luxury-gold">{bookingData.roomPlan} Plan</p>
                   </div>
                 </div>
+                {bookingData.extraBedType && (
+                  <div className="flex justify-between items-start">
+                    <span className="text-[0.6rem] uppercase font-black text-gray-400 tracking-widest pt-1">Extra Bed</span>
+                    <div className="text-right">
+                      <p className="font-bold text-gray-800 text-sm">{bookingData.extraBedType}</p>
+                      <p className="text-[0.6rem] font-black uppercase text-luxury-gold">{bookingData.extraBedPlan} Plan</p>
+                    </div>
+                  </div>
+                )}
               </div>
 
-              <div className="no-print">
-                <button 
-                  onClick={() => setCurrentStep(1)}
-                  className="w-full bg-[#0b1527] text-white py-5 rounded-2xl text-xs font-black uppercase tracking-widest hover:scale-[1.02] transition-all shadow-xl"
-                >
-                  Close & Back to Home
-                </button>
-              </div>
             </div>
           </motion.div>
         </div>
