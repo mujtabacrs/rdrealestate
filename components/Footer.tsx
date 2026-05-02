@@ -55,9 +55,14 @@ const Footer = () => {
                 <Phone size={18} className="text-luxury-gold" />
                 <span>+91 97961 11172</span>
               </div>
-              <div className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
-                <Mail size={18} className="text-luxury-gold" />
-                <span>admin.thindiankargil@gmail.com</span>
+              <div className="flex flex-col space-y-2 text-gray-600 dark:text-gray-300">
+                <div className="flex items-center space-x-3">
+                  <Mail size={18} className="text-luxury-gold" />
+                  <a href="mailto:admin.hoteltheindiankargil@gmail.com" className="hover:text-luxury-gold transition-colors text-sm">admin.hoteltheindiankargil@gmail.com</a>
+                </div>
+                <div className="flex items-center space-x-3 ml-7 md:ml-0 lg:ml-7">
+                  <a href="mailto:bookings.hoteltheindiankargil@gmail.com" className="hover:text-luxury-gold transition-colors text-sm">bookings.hoteltheindiankargil@gmail.com</a>
+                </div>
               </div>
             </div>
           </div>

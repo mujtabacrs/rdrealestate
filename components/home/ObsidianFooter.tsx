@@ -60,9 +60,12 @@ const ObsidianFooter = () => {
 
           <div className="md:col-span-4 flex flex-col items-end text-right">
              <span className="text-[0.5rem] uppercase tracking-[0.4em] text-foreground-rgb/30 mb-4">Inquiries</span>
-             <a href="mailto:admin.thindiankargil@gmail.com" className="font-editorial text-2xl text-foreground-rgb hover:text-c-gold transition-colors italic">
-               admin.thindiankargil@gmail.com
-             </a>
+              <a href="mailto:admin.hoteltheindiankargil@gmail.com" className="font-editorial text-xl text-foreground-rgb hover:text-c-gold transition-colors italic">
+                admin.hoteltheindiankargil@gmail.com
+              </a>
+              <a href="mailto:bookings.hoteltheindiankargil@gmail.com" className="font-editorial text-xl text-foreground-rgb hover:text-c-gold transition-colors italic mt-1">
+                bookings.hoteltheindiankargil@gmail.com
+              </a>
              <a href="tel:+919796111172" className="font-editorial text-xl text-foreground-rgb hover:text-c-gold transition-colors mt-2">
                +91 97961 11172
              </a>

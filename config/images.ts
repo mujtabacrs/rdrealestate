@@ -12,7 +12,7 @@ export const IMAGES = {
   // Home Page Sections
   home: {
     hero: {
-      backdrop: '/images/khg1.jpeg',
+      backdrop: '/GLIMPSE/LADAKH SENERY 5.jpg',
     },
     origin: '/images/khg2.jpeg',
     videoTour: '/images/ladakh is calling (1).mp4',

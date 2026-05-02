@@ -61,7 +61,7 @@ export default function Contact() {
     {
       icon: Mail,
       title: 'Email',
-      details: ['admin.thindiankargil@gmail.com', 'bookings.thindiankargil@gmail.com'],
+      details: ['admin.hoteltheindiankargil@gmail.com', 'bookings.hoteltheindiankargil@gmail.com'],
     },
     {
       icon: Clock,
@@ -76,9 +76,9 @@ export default function Contact() {
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-luxury-charcoal">
         <div className="absolute inset-0 z-0 opacity-30">
           <img 
-            src="https://images.unsplash.com/photo-1590523278191-995cbcda646b?auto=format&fit=crop&q=80"
-            alt="Contact Background"
-            className="w-full h-full object-cover grayscale"
+            src="/GLIMPSE/NUBRA VALLEY.jpg"
+            alt="Nubra Valley"
+            className="w-full h-full object-cover"
           />
         </div>
         <motion.div
