@@ -8,6 +8,10 @@ export const metadata: Metadata = {
   title: 'Hotel Kargil - Luxury Redefined',
   description: 'Experience unparalleled luxury at Hotel Kargil. Premium accommodations, world-class amenities, and exceptional service in the heart of Ladakh.',
   keywords: 'luxury hotel kargil, hotel kargil, ladakh accommodation, premium resort kargil',
+  icons: {
+    icon: '/images/hotel_the_inidan_kargil_logo-removebg-preview.png',
+    apple: '/images/hotel_the_inidan_kargil_logo-removebg-preview.png',
+  },
 }
 
 export default function RootLayout({
