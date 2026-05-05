@@ -5,9 +5,9 @@ import { ThemeProvider } from '@/context/ThemeContext'
 import SmoothScroll from '@/components/ui/SmoothScroll'
 
 export const metadata: Metadata = {
-  title: 'Hotel Kargil - Luxury Redefined',
-  description: 'Experience unparalleled luxury at Hotel Kargil. Premium accommodations, world-class amenities, and exceptional service in the heart of Ladakh.',
-  keywords: 'luxury hotel kargil, hotel kargil, ladakh accommodation, premium resort kargil',
+  title: 'RealEstate RD - Premium Properties',
+  description: 'Discover premium real estate opportunities with RealEstate RD. Quality properties, exceptional service, and trusted expertise in real estate.',
+  keywords: 'real estate, premium properties, property investment, real estate rd, property sales',
   icons: {
     icon: '/images/hotel_the_inidan_kargil_logo-removebg-preview.png',
     apple: '/images/hotel_the_inidan_kargil_logo-removebg-preview.png',

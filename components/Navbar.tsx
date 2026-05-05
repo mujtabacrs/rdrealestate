@@ -47,7 +47,7 @@ const Navbar = () => {
             >
               <img 
                 src={IMAGES.logo} 
-                alt="Hotel Kargil Logo" 
+                alt="RealEstate RD Logo" 
                 className="h-24 md:h-32 w-auto object-contain"
               />
             </motion.div>

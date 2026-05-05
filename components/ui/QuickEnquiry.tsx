@@ -9,7 +9,7 @@ export default function QuickEnquiry() {
   const [activeMode, setActiveMode] = useState<Mode>('none');
   const [hasMounted, setHasMounted] = useState(false);
   const [waMessage, setWaMessage] = useState(
-    "Hi Hotel The Indian, Kargil! I'm interested in booking a stay. Could you help me with some details?"
+    "Hi RealEstate RD! I'm interested in learning more about your properties. Could you help me with some details?"
   );
 
   const [shouldFlicker, setShouldFlicker] = useState(false);

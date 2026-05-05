@@ -59,7 +59,7 @@ const HeroSection = () => {
           <div className="absolute inset-0 bg-black/40 z-10 backdrop-blur-md" />
           <img
             src={IMAGES.home.hero.backdrop}
-            alt="Hotel Kargil Architectural Backdrop"
+            alt="RealEstate RD Architectural Backdrop"
             className="w-full h-full object-cover blur-sm brightness-75 scale-105"
           />
         </div>
@@ -72,7 +72,7 @@ const HeroSection = () => {
           <div className="absolute inset-0 bg-black/40 z-20" />
           <img
             src={IMAGES.home.hero.backdrop}
-            alt="Hotel Kargil Architectural Reveal"
+            alt="RealEstate RD Architectural Reveal"
             className="w-full h-full object-cover"
           />
         </motion.div>

@@ -45,7 +45,7 @@ const ObsidianFooter = () => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-16 relative z-10">
           
           <div className="md:col-span-4">
-            <h3 className="font-editorial text-4xl text-foreground-rgb mb-8">Hotel Kargil</h3>
+            <h3 className="font-editorial text-4xl text-foreground-rgb mb-8">RealEstate RD</h3>
             <p className="text-[0.6rem] uppercase tracking-[0.4em] text-foreground-rgb/40 leading-loose max-w-xs">
               Independent practice operating <br /> across locations of unparalleled <br /> tranquility.
             </p>
@@ -76,7 +76,7 @@ const ObsidianFooter = () => {
         {/* Floating Rocky Texture / Brand Mark */}
         <div className="mt-40 pt-20 border-t border-foreground-rgb/5 flex flex-col md:flex-row items-center justify-between gap-8">
           <p className="text-[0.5rem] uppercase tracking-[0.4em] text-foreground-rgb/30">
-            &copy; 2026 Hotel Kargil. All Rights Reserved.
+            &copy; 2026 RealEstate RD. All Rights Reserved.
           </p>
           <div className="flex items-center gap-8">
             <span className="text-[0.5rem] uppercase tracking-[0.4em] text-foreground-rgb/30">Experience Kargil</span>
