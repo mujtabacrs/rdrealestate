@@ -62,8 +62,8 @@ export default function Contact() {
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-luxury-charcoal">
         <div className="absolute inset-0 z-0 opacity-30">
           <img 
-            src="/GLIMPSE/NUBRA VALLEY.jpg"
-            alt="Nubra Valley"
+            src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1973&q=80"
+            alt="Premium Real Estate Properties"
             className="w-full h-full object-cover"
           />
         </div>
