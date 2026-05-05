@@ -9,7 +9,7 @@ export default function QuickEnquiry() {
   const [activeMode, setActiveMode] = useState<Mode>('none');
   const [hasMounted, setHasMounted] = useState(false);
   const [waMessage, setWaMessage] = useState(
-    "Hi RealEstate RD! I'm interested in learning more about your properties. Could you help me with some details?"
+    "Hi R.D Properties! I'm interested in learning more about your premium properties. Could you help me with some details?"
   );
 
   const [shouldFlicker, setShouldFlicker] = useState(false);
@@ -30,7 +30,7 @@ export default function QuickEnquiry() {
     e.preventDefault();
     if (waMessage) {
       const text = encodeURIComponent(waMessage);
-      window.open(`https://wa.me/919796111172?text=${text}`, '_blank');
+      window.open(`https://wa.me/918077962542?text=${text}`, '_blank');
       setActiveMode('none');
     }
   };

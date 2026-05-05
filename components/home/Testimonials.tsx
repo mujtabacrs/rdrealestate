@@ -6,38 +6,38 @@ import { Star, Quote, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const testimonials = [
   {
-    name: "Ajay Ghosh",
-    initial: "A",
+    name: "Rajeet Kumar",
+    initial: "R",
     color: "bg-blue-600",
-    text: "We had a very good experience the hotel rooms were clean and very comfortable the staff was exceptional going above and beyond to ensure that we have a pleasant stay. Highly recommended",
+    text: "R.D Properties helped us find our dream home in just 3 weeks! Their market knowledge and professional service made the entire buying process smooth and stress-free. Highly recommended for anyone looking for premium properties.",
     rating: 5,
   },
   {
-    name: "Bisma Sofi",
-    initial: "B",
+    name: "Rambir Singh",
+    initial: "R",
     color: "bg-orange-600",
-    text: "Amazing rooms with respected staff. I had Nice experience here. Thank you hotel the indian kargil",
+    text: "Sold my property above asking price thanks to their excellent marketing strategy and negotiation skills. The team at R.D Properties truly understands the real estate market and delivers exceptional results.",
     rating: 5,
   },
   {
-    name: "Rubina Riyaz",
-    initial: "R",
+    name: "Ashish Sharma",
+    initial: "A",
     color: "bg-teal-600",
-    text: "the best experience and the best staff i have ever seen. nice accomodation,perfect location thanks to this hotel",
+    text: "Found the perfect rental apartment through R.D Properties. Their attention to detail and personalized service made apartment hunting a breeze. Great location, fair pricing, and professional management.",
     rating: 5,
   },
   {
-    name: "Basit Wani",
-    initial: "B",
+    name: "Yogender Patel",
+    initial: "Y",
     color: "bg-pink-600",
-    text: "Great experience. Loved my time here..great location, modern amenities, and helpful staff. Thanks",
+    text: "Excellent commercial leasing experience. R.D Properties secured us a prime office location with flexible terms that perfectly suited our business needs. Professional service from start to finish.",
     rating: 5,
   },
   {
-    name: "Rakesh Koundal",
-    initial: "R",
+    name: "Ashish Gupta",
+    initial: "A",
     color: "bg-indigo-600",
-    text: "It was great experience. Owner and staff was very congenial and cooperative. Food was very delicious. Rooms are spacious and luxurious.",
+    text: "Outstanding investment advisory services! R.D Properties guided us through multiple property investments with expert market insights. Our portfolio has grown significantly thanks to their strategic guidance.",
     rating: 5,
   }
 ]
@@ -65,10 +65,10 @@ const Testimonials = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-12">
           <div className="space-y-4">
             <span className="text-[0.6rem] uppercase tracking-[0.6em] text-luxury-gold font-black mb-4 block">
-              Global Recognition
+              Client Success Stories
             </span>
             <h2 className="font-editorial text-5xl md:text-7xl text-white leading-none">
-              Guest <span className="italic text-luxury-gold">Voices</span>
+              Client <span className="italic text-luxury-gold">Voices</span>
             </h2>
           </div>
           
@@ -144,7 +144,7 @@ const Testimonials = () => {
                 <div>
                   <p className="font-bold text-base text-[#0b1527] leading-none mb-1">{t.name}</p>
                   <div className="flex items-center gap-2">
-                    <span className="text-[0.5rem] uppercase font-black tracking-widest text-gray-400">Verified Guest on</span>
+                    <span className="text-[0.5rem] uppercase font-black tracking-widest text-gray-400">Verified Client on</span>
                     <img 
                       src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_Logo.svg" 
                       alt="Google" 

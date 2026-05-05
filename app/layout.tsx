@@ -9,8 +9,8 @@ export const metadata: Metadata = {
   description: 'Discover premium real estate opportunities with RealEstate RD. Quality properties, exceptional service, and trusted expertise in real estate.',
   keywords: 'real estate, premium properties, property investment, real estate rd, property sales',
   icons: {
-    icon: '/images/hotel_the_inidan_kargil_logo-removebg-preview.png',
-    apple: '/images/hotel_the_inidan_kargil_logo-removebg-preview.png',
+    icon: '/images/ChatGPT_Image_May_5__2026__05_56_51_PM-removebg-preview (1).png',
+    apple: '/images/ChatGPT_Image_May_5__2026__05_56_51_PM-removebg-preview (1).png',
   },
 }
 

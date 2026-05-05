@@ -30,10 +30,10 @@ export default function About() {
           className="relative z-10 text-center max-w-4xl mx-auto px-4"
         >
           <h1 className="text-5xl md:text-7xl font-serif font-bold text-gradient mb-6">
-            Our Story
+            About R.D Properties
           </h1>
           <p className="text-xl md:text-2xl text-gray-200 leading-relaxed">
-            A legacy of luxury, crafted with passion and dedication to create unforgettable experiences
+            Building dreams, creating value, and transforming communities through exceptional real estate solutions
           </p>
         </motion.div>
       </section>
@@ -53,22 +53,23 @@ export default function About() {
               </h2>
               <div className="space-y-6 text-gray-300 leading-relaxed">
                 <p className="text-lg">
-                  For over three decades, Hotel Kargil has been synonymous with unparalleled luxury and exceptional hospitality. 
-                  What began as a vision to create the world's most extraordinary resort experience has evolved into a legacy 
-                  that continues to set new standards in luxury travel.
+                  For over a decade, R.D Properties has been at the forefront of real estate excellence, transforming 
+                  the way people buy, sell, rent, and lease properties. What began as a vision to create transparent, 
+                  client-focused real estate services has evolved into a trusted name in premium property solutions.
                 </p>
                 <p className="text-lg">
-                  Nestled in one of the world's most breathtaking locations, our resort combines timeless elegance with 
-                  modern sophistication. Every detail has been carefully curated to ensure that our guests experience 
-                  nothing short of perfection.
+                  Located in prime real estate markets, our company combines deep market knowledge with 
+                  innovative technology and personalized service. Every transaction is handled with meticulous 
+                  attention to detail, ensuring our clients achieve their property goals with confidence.
                 </p>
                 <p className="text-lg italic text-luxury-gold/90 border-l-2 border-luxury-gold/30 pl-6">
-                  The property has been recently renovated by Kiffayat Jaffri Constructions and Services (72) Private Limited 
-                  and was taken over by Tabasum Kiffayat in April 2026.
+                  R.D Properties specializes in residential, commercial, and investment properties, offering 
+                  comprehensive real estate services tailored to meet diverse client needs and market demands.
                 </p>
                 <p className="text-lg">
-                  From our award-winning spa and world-class dining to our meticulously designed suites and personalized 
-                  service, we believe that luxury is not just about amenities—it's about creating moments that last a lifetime.
+                  From luxury homes and commercial spaces to investment opportunities and property management, 
+                  we believe that real estate is not just about transactions—it's about building relationships 
+                  and creating lasting value for our clients and communities.
                 </p>
               </div>
             </motion.div>
@@ -82,7 +83,7 @@ export default function About() {
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <img
                   src={IMAGES.about.interior}
-                  alt="Luxury hotel interior"
+                  alt="Modern real estate office"
                   className="w-full h-[500px] object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
@@ -94,10 +95,10 @@ export default function About() {
                 className="absolute -bottom-8 -left-8 glass p-6 rounded-xl hidden md:block"
               >
                 <h4 className="text-xl font-serif font-semibold text-luxury-gold mb-2">
-                  Excellence Recognized
+                  Market Leadership
                 </h4>
                 <p className="text-gray-200 text-sm">
-                  Consistently rated among the world's top luxury resorts
+                  Consistently ranked among the top real estate firms in the region
                 </p>
               </motion.div>
             </motion.div>
@@ -106,10 +107,10 @@ export default function About() {
           {/* Stats - Single Line underneath */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { icon: Award, number: '50+', label: 'Awards Won' },
-              { icon: Users, number: '100K+', label: 'Happy Guests' },
-              { icon: Globe, number: '80+', label: 'Countries Served' },
-              { icon: Heart, number: '30+', label: 'Years of Excellence' },
+              { icon: Award, number: '50+', label: 'Properties Sold' },
+              { icon: Users, number: '100+', label: 'Happy Clients' },
+              { icon: Globe, number: '15+', label: 'Locations Served' },
+              { icon: Heart, number: '5+', label: 'Years of Excellence' },
             ].map((stat, index) => (
               <motion.div
                 key={stat.label}
@@ -138,34 +139,24 @@ export default function About() {
             className="text-center"
           >
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-gradient mb-12">
-              From the Owner's Desk
+              Founder's Wise Words
             </h2>
             
             <div className="glass rounded-3xl p-8 md:p-12">
-              <div className="flex flex-col md:flex-row items-center gap-8">
-                <div className="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden ring-4 ring-luxury-gold/30 flex-shrink-0">
-                  <img
-                    src={IMAGES.about.owner}
-                    alt="Owner"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+              <div className="text-center">
+                <blockquote className="text-xl md:text-2xl text-gray-200 leading-relaxed mb-6 italic font-light">
+                  "When I founded R.D Properties, I envisioned creating more than just a real estate company. 
+                  I wanted to build a trusted partner that helps families find their perfect homes and investors 
+                  discover valuable opportunities. Today, seeing our clients achieve their property dreams, 
+                  I know we've built something truly meaningful in the real estate industry."
+                </blockquote>
                 
-                <div className="text-left">
-                  <blockquote className="text-xl md:text-2xl text-gray-200 leading-relaxed mb-6 italic font-light">
-                    "When I envisioned Hotel Kargil, I dreamed of creating more than just a hotel. 
-                    I wanted to craft a sanctuary where every guest feels like royalty, where every moment 
-                    is infused with magic, and where memories are born that last a lifetime. Today, 
-                    seeing the joy on our guests' faces, I know we've achieved something truly special."
-                  </blockquote>
-                  
-                  <div className="text-right">
-                    <div className="text-luxury-gold font-serif text-2xl mb-1">
-                      Tabasum Kiffayat
-                    </div>
-                    <div className="text-gray-400">
-                      Owner
-                    </div>
+                <div className="text-center mt-8">
+                  <div className="text-luxury-gold font-serif text-2xl mb-1">
+                    R.D Properties Team
+                  </div>
+                  <div className="text-gray-400">
+                    Founders & Real Estate Experts
                   </div>
                 </div>
               </div>
@@ -203,9 +194,9 @@ export default function About() {
                 Our Mission
               </h3>
               <p className="text-gray-300 leading-relaxed">
-                To provide an unparalleled luxury experience that exceeds expectations through exceptional 
-                service, world-class amenities, and attention to every detail. We are committed to creating 
-                magical moments and lasting memories for every guest who walks through our doors.
+                To provide exceptional real estate services that exceed client expectations through market expertise, 
+                personalized guidance, and unwavering integrity. We are committed to helping individuals and families 
+                find their perfect properties while ensuring every transaction is smooth, transparent, and successful.
               </p>
             </motion.div>
 
@@ -222,9 +213,10 @@ export default function About() {
                 Our Vision
               </h3>
               <p className="text-gray-300 leading-relaxed">
-                To be recognized as the world's premier luxury resort destination, setting the gold standard 
-                for hospitality excellence. We envision a future where Hotel Kargil becomes synonymous with 
-                the ultimate luxury travel experience, inspiring wanderlust and creating lifelong connections.
+                To be recognized as the premier real estate company in our region, setting the gold standard 
+                for property services and client satisfaction. We envision a future where R.D Properties becomes 
+                synonymous with trust, excellence, and successful property investments, creating lasting relationships 
+                with clients and contributing to thriving communities.
               </p>
             </motion.div>
           </div>

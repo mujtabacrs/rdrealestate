@@ -24,7 +24,7 @@ const WhatWeOffer = () => {
   return (
     <motion.section
       ref={containerRef}
-      className="relative pt-[25vh] pb-40 min-h-screen z-30 bg-[#12141a] -mt-[100vh]"
+      className="relative pt-[calc(25vh-10px)] pb-40 min-h-screen z-30 bg-[#12141a] -mt-[100vh]"
     >
       {/* The Arc Layover requested by the user */}
       <div className="absolute top-0 left-0 w-full h-[100px] md:h-[150px] -translate-y-[99%] z-30 pointer-events-none">
@@ -61,29 +61,38 @@ const WhatWeOffer = () => {
         </svg>
       </div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-6 flex flex-col items-center text-center">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 flex flex-col items-center text-center">
 
         <motion.span
           style={{ y: headingY, opacity: headingOpacity }}
-          className="font-editorial text-6xl md:text-9xl text-foreground-rgb mb-12 drop-shadow-md"
+          className="font-editorial text-6xl md:text-9xl text-foreground-rgb mb-20 drop-shadow-md"
         >
-          The Principles
+          Our Services
         </motion.span>
 
-        <motion.h3
-          style={{ y: headingY, opacity: headingOpacity }}
-          className="font-editorial text-2xl md:text-3xl text-foreground-rgb leading-tight mb-20 max-w-2xl"
-        >
-          Luxury in the Himalayas is an intimate dialogue between the rugged majesty of the mountains and the timeless warmth of Ladakhi hospitality.
-        </motion.h3>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-16 text-left">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-left w-full">
 
           {[
-            { title: "Himalayan Hospitality", text: "Experience the profound warmth of Ladakh merged with modern luxury. A legacy of service rooted in the heart of Kargil's historic landscape." },
-            { title: "Culinary Heritage", text: "Savor authentic flavors of the Silk Route alongside global gourmet cuisine. Freshly sourced ingredients from the fertile Suru Valley." },
-            { title: "Artisan Suites", text: "Elegantly appointed sanctuaries inspired by the rugged beauty of our peaks. A haven of comfort redefined amidst the Karakoram ranges." },
-            { title: "Cultural Immersion", text: "From exploring ancient monasteries to the silent majesty of local monuments. Discover the untold stories of a land frozen in time." }
+            { 
+              title: "Buy Properties", 
+              text: "Find your dream home or perfect investment property with our extensive portfolio of premium residential and commercial properties in prime locations.",
+              image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2075&q=80"
+            },
+            { 
+              title: "Sell", 
+              text: "Maximize your property's value with our expert marketing strategies, professional photography, and extensive network of qualified buyers.",
+              image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1973&q=80"
+            },
+            { 
+              title: "Rent", 
+              text: "Discover exceptional rental properties that meet your lifestyle needs, from luxury apartments to spacious family homes in desirable neighborhoods.",
+              image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+            },
+            { 
+              title: "Lease", 
+              text: "Secure the perfect commercial space for your business with flexible leasing options and prime locations that drive success and growth.",
+              image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+            }
           ].map((item, i) => (
             <motion.div
               key={i}
@@ -91,12 +100,25 @@ const WhatWeOffer = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 + i * 0.1, duration: 1.2, ease: [0.35, 0.35, 0, 1] }}
-              className="flex flex-col gap-4"
+              className="bg-white/5 backdrop-blur-sm rounded-lg overflow-hidden border border-white/10 hover:border-yellow-500/30 transition-all duration-300 group"
             >
-              <span className="text-[0.6rem] uppercase tracking-[0.4em] text-foreground-rgb/40">{item.title}</span>
-              <p className="text-sm leading-relaxed text-foreground-rgb/80">
-                {item.text}
-              </p>
+              {/* Card Image */}
+              <div className="relative h-48 overflow-hidden">
+                <img 
+                  src={item.image} 
+                  alt={item.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              </div>
+              
+              {/* Card Content */}
+              <div className="p-6">
+                <span className="text-sm md:text-lg font-bold uppercase tracking-[0.2em] text-yellow-500/90 mb-3 block">{item.title}</span>
+                <p className="text-sm leading-relaxed text-foreground-rgb/80">
+                  {item.text}
+                </p>
+              </div>
             </motion.div>
           ))}
 

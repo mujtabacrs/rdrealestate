@@ -110,7 +110,7 @@ const HeroSection = () => {
           {/* Top Detail */}
           <div className="text-center">
             <span className="uppercase tracking-[0.5em] text-[0.6rem] text-white">
-              Experience Kargil
+              Premium Properties
             </span>
           </div>
 
@@ -119,14 +119,14 @@ const HeroSection = () => {
             {/* Left Block */}
             <div className="max-w-[15rem] text-left hidden md:block absolute left-0 top-1/2 -translate-y-1/2">
               <p className="text-[0.65rem] uppercase tracking-widest leading-relaxed text-white">
-                Hotel The Indian Kargil is your premium gateway to the majestic landscapes of Ladakh.
+                R.D Properties is your trusted partner for premium real estate investments and luxury properties.
               </p>
             </div>
 
             {/* Right Block */}
             <div className="max-w-[15rem] text-right hidden md:block absolute right-0 top-1/2 -translate-y-1/2">
               <p className="text-[0.65rem] uppercase tracking-widest leading-relaxed text-white">
-                We blend modern luxury with traditional Ladakhi warmth for an unforgettable stay.
+                We combine market expertise with personalized service to deliver exceptional real estate experiences.
               </p>
             </div>
 
@@ -134,9 +134,9 @@ const HeroSection = () => {
             <div className="absolute bottom-[12vh] md:bottom-[5vh] left-1/2 -translate-x-1/2 w-[120vw] flex justify-center z-30 pointer-events-none">
               <motion.h1
                 style={{ y: titleY, opacity: titleOpacity }}
-                className="font-editorial text-[14vw] md:text-[12vw] text-white leading-none whitespace-nowrap opacity-90 drop-shadow-2xl"
+                className="font-editorial text-[14vw] md:text-[12vw] text-white leading-none text-center opacity-90 drop-shadow-2xl"
               >
-                Hotel Kargil
+                R.D<br />PROPERTIES
               </motion.h1>
             </div>
 
@@ -146,7 +146,7 @@ const HeroSection = () => {
           {/* Mobile Text (Fallback) */}
           <div className="md:hidden text-center mt-auto">
             <p className="text-[0.6rem] uppercase tracking-widest text-white/60">
-              Speculative Hospitality
+              Premium Real Estate
             </p>
           </div>
         </div>

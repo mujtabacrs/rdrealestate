@@ -6,9 +6,8 @@ import Link from 'next/link'
 const Footer = () => {
   const quickLinks = [
     { name: 'About Us', href: '/about' },
-    { name: 'Gallery', href: '/gallery' },
+    { name: 'Properties', href: '/gallery' },
     { name: 'Contact', href: '/contact' },
-    { name: 'Booking', href: '/booking' },
   ]
 
   return (
@@ -18,11 +17,11 @@ const Footer = () => {
           {/* Brand */}
           <div className="space-y-4">
             <h3 className="text-2xl font-serif font-bold text-gradient">
-              RealEstate RD
+              R.D Properties
             </h3>
             <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-              Experience unparalleled luxury and comfort at our premium resort in Ladakh. 
-              Where every moment becomes a cherished memory.
+              Your trusted partner for premium real estate investments and luxury properties. 
+              Where every property becomes your perfect home.
             </p>
           </div>
 
@@ -49,19 +48,16 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
                 <MapPin size={18} className="text-luxury-gold" />
-                <span>Main Market Kargil, Ladakh</span>
+                <span>402 SBC Walk Near Amyra Kurali Road</span>
               </div>
               <div className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
                 <Phone size={18} className="text-luxury-gold" />
-                <span>+91 97961 11172</span>
+                <span>+91 80779 62542</span>
               </div>
               <div className="flex flex-col space-y-2 text-gray-600 dark:text-gray-300">
                 <div className="flex items-center space-x-3">
                   <Mail size={18} className="text-luxury-gold" />
-                  <a href="mailto:admin.hoteltheindiankargil@gmail.com" className="hover:text-luxury-gold transition-colors text-sm">admin.hoteltheindiankargil@gmail.com</a>
-                </div>
-                <div className="flex items-center space-x-3 ml-7 md:ml-0 lg:ml-7">
-                  <a href="mailto:bookings.hoteltheindiankargil@gmail.com" className="hover:text-luxury-gold transition-colors text-sm">bookings.hoteltheindiankargil@gmail.com</a>
+                  <a href="mailto:rdpropertiesproperties@gmail.com" className="hover:text-luxury-gold transition-colors text-sm">rdpropertiesproperties@gmail.com</a>
                 </div>
               </div>
             </div>
@@ -69,18 +65,10 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-gray-200 dark:border-white/10 flex flex-col md:flex-row justify-between items-center">
+        <div className="mt-12 pt-8 border-t border-gray-200 dark:border-white/10 flex flex-col md:flex-row justify-center items-center">
           <p className="text-gray-500 dark:text-gray-400 text-sm">
-            © 2026 RealEstate RD. All rights reserved.
+            © 2026 R.D Properties. All rights reserved.
           </p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link href="#" className="text-gray-500 dark:text-gray-400 hover:text-luxury-gold text-sm transition-colors">
-              Privacy Policy
-            </Link>
-            <Link href="#" className="text-gray-500 dark:text-gray-400 hover:text-luxury-gold text-sm transition-colors">
-              Terms of Service
-            </Link>
-          </div>
         </div>
       </div>
     </footer>

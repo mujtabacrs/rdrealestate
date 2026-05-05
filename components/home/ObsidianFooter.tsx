@@ -7,7 +7,7 @@ const ObsidianFooter = () => {
   return (
     <footer className="relative bg-background-start-rgb">
       
-      {/* Arch Section Joiner (Connects OriginSection to Footer) */}
+      {/* Arch Section Joiner */}
       <div className="absolute top-0 left-0 w-full h-32 overflow-hidden -translate-y-full z-20 pointer-events-none">
         <svg 
           viewBox="0 0 1440 200" 
@@ -45,29 +45,26 @@ const ObsidianFooter = () => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-16 relative z-10">
           
           <div className="md:col-span-4">
-            <h3 className="font-editorial text-4xl text-foreground-rgb mb-8">RealEstate RD</h3>
+            <h3 className="font-editorial text-4xl text-foreground-rgb mb-8">R.D Properties</h3>
             <p className="text-[0.6rem] uppercase tracking-[0.4em] text-foreground-rgb/40 leading-loose max-w-xs">
-              Independent practice operating <br /> across locations of unparalleled <br /> tranquility.
+              Premium real estate practice operating <br /> across prime locations of exceptional <br /> value and luxury.
             </p>
           </div>
 
           <div className="md:col-span-4 flex flex-col gap-4">
             <span className="text-[0.5rem] uppercase tracking-[0.4em] text-foreground-rgb/30 mb-2">Explore</span>
-            <Link href="/gallery" className="text-xs uppercase tracking-widest text-foreground-rgb hover:text-c-gold transition-colors">The Collection</Link>
-            <Link href="/about" className="text-xs uppercase tracking-widest text-foreground-rgb hover:text-c-gold transition-colors">Our Origin</Link>
-            <Link href="/booking" className="text-xs uppercase tracking-widest text-foreground-rgb hover:text-c-gold transition-colors">Availability</Link>
+            <Link href="/gallery" className="text-xs uppercase tracking-widest text-foreground-rgb hover:text-c-gold transition-colors">Properties</Link>
+            <Link href="/about" className="text-xs uppercase tracking-widest text-foreground-rgb hover:text-c-gold transition-colors">Our Story</Link>
+            <Link href="/contact" className="text-xs uppercase tracking-widest text-foreground-rgb hover:text-c-gold transition-colors">Contact</Link>
           </div>
 
           <div className="md:col-span-4 flex flex-col items-end text-right">
              <span className="text-[0.5rem] uppercase tracking-[0.4em] text-foreground-rgb/30 mb-4">Inquiries</span>
-              <a href="mailto:admin.hoteltheindiankargil@gmail.com" className="font-editorial text-xl text-foreground-rgb hover:text-c-gold transition-colors italic">
-                admin.hoteltheindiankargil@gmail.com
+              <a href="mailto:rdpropertiesproperties@gmail.com" className="font-editorial text-xl text-foreground-rgb hover:text-c-gold transition-colors italic">
+                rdpropertiesproperties@gmail.com
               </a>
-              <a href="mailto:bookings.hoteltheindiankargil@gmail.com" className="font-editorial text-xl text-foreground-rgb hover:text-c-gold transition-colors italic mt-1">
-                bookings.hoteltheindiankargil@gmail.com
-              </a>
-             <a href="tel:+919796111172" className="font-editorial text-xl text-foreground-rgb hover:text-c-gold transition-colors mt-2">
-               +91 97961 11172
+             <a href="tel:+918077962542" className="font-editorial text-xl text-foreground-rgb hover:text-c-gold transition-colors mt-2">
+               +91 80779 62542
              </a>
           </div>
 
@@ -76,10 +73,10 @@ const ObsidianFooter = () => {
         {/* Floating Rocky Texture / Brand Mark */}
         <div className="mt-40 pt-20 border-t border-foreground-rgb/5 flex flex-col md:flex-row items-center justify-between gap-8">
           <p className="text-[0.5rem] uppercase tracking-[0.4em] text-foreground-rgb/30">
-            &copy; 2026 RealEstate RD. All Rights Reserved.
+            &copy; 2026 R.D Properties. All Rights Reserved.
           </p>
           <div className="flex items-center gap-8">
-            <span className="text-[0.5rem] uppercase tracking-[0.4em] text-foreground-rgb/30">Experience Kargil</span>
+            <span className="text-[0.5rem] uppercase tracking-[0.4em] text-foreground-rgb/30">Premium Properties</span>
             {/* Rocky Texture Asset Placeholder */}
             <div className="w-12 h-12 bg-c-black arch-mask opacity-20 grayscale" />
           </div>

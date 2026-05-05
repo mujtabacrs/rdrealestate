@@ -73,23 +73,23 @@ const GlimpseSection = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 className="text-[0.6rem] uppercase tracking-[0.5em] text-white/40 mb-6 block"
               >
-                The Collection
+                Premium Portfolio
               </motion.span>
               <h2 className="font-editorial text-5xl md:text-8xl text-white leading-none">
-                A Glimpse of <br /> <span className="italic ml-12">Paradise</span>
+                A Glimpse of <br /> <span className="italic ml-12">Excellence</span>
               </h2>
             </div>
 
             <div className="flex-1 md:max-w-xs relative">
               <p className="text-xs md:text-sm text-white/60 leading-relaxed mb-8">
-                Only a select preview of our most iconic luxury spaces. Each experience is tied to a specific place, which defines its origin.
+                A curated selection of our finest properties. Each investment opportunity is carefully chosen for its unique location and exceptional value potential.
               </p>
 
               <div className="flex items-center justify-between">
                 <Link href="/gallery">
                   <button className="text-white/80 hover:text-white text-[0.6rem] uppercase tracking-[0.3em] flex items-center gap-4 transition-colors">
                     <span className="w-8 h-px bg-white/40 block" />
-                    View Full Gallery
+                    View All Properties
                   </button>
                 </Link>
 

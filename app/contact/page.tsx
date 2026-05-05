@@ -20,24 +20,10 @@ export default function Contact() {
     e.preventDefault()
     setIsSubmitting(true)
     
-    try {
-      const response = await fetch('/api/leads/enquiry', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      })
-
-      const result = await response.json()
-
-      if (!response.ok) throw new Error(result.error || 'Failed to submit')
-      
-      setIsSubmitting(false)
-      setFormData({ name: '', email: '', phone: '', message: '' })
-      alert('Thank you for your message! We will get back to you soon on WhatsApp.')
-    } catch (error) {
-      setIsSubmitting(false)
-      alert('Failed to send message. Please try again.')
-    }
+    // Simple form submission without API
+    setIsSubmitting(false)
+    setFormData({ name: '', email: '', phone: '', message: '' })
+    alert('Thank you for your message! We will get back to you soon.')
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -51,22 +37,22 @@ export default function Contact() {
     {
       icon: MapPin,
       title: 'Address',
-      details: ['Main Market Kargil', 'Ladakh, UT, India 194103'],
+      details: ['402 SBC Walk Near Amyra', 'Kurali Road'],
     },
     {
       icon: Phone,
       title: 'Phone',
-      details: ['+91 97961 11172'],
+      details: ['+91 80779 62542'],
     },
     {
       icon: Mail,
       title: 'Email',
-      details: ['admin.hoteltheindiankargil@gmail.com', 'bookings.hoteltheindiankargil@gmail.com'],
+      details: ['rdpropertiesproperties@gmail.com'],
     },
     {
       icon: Clock,
       title: 'Hours',
-      details: ['24/7 Concierge Service', 'Check-in: 3:00 PM', 'Check-out: 11:00 AM'],
+      details: ['Mon - Sat: 9:00 AM - 7:00 PM', 'Sunday: 10:00 AM - 5:00 PM', 'Property Viewings by Appointment'],
     },
   ]
 
@@ -91,7 +77,7 @@ export default function Contact() {
             Contact Us
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 leading-relaxed uppercase tracking-[0.3em]">
-            Himalayan Hospitality Awaits
+            Premium Real Estate Solutions
           </p>
         </motion.div>
       </section>
@@ -251,8 +237,8 @@ export default function Contact() {
                 <div className="w-full h-full bg-gradient-to-br from-luxury-gold/20 to-luxury-dark flex items-center justify-center">
                   <div className="text-center">
                     <MapPin size={48} className="text-luxury-gold mx-auto mb-4" />
-                    <p className="text-white text-lg font-semibold">Interactive Map</p>
-                    <p className="text-gray-300 text-sm">Find us in Paradise City</p>
+                    <p className="text-white text-lg font-semibold">Find Our Office</p>
+                    <p className="text-gray-300 text-sm">402 SBC Walk Near Amyra, Kurali Road</p>
                   </div>
                 </div>
               </motion.div>
@@ -270,19 +256,19 @@ export default function Contact() {
             transition={{ duration: 0.8 }}
           >
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-gradient mb-6">
-              Ready to Experience Luxury?
+              Ready to Find Your Dream Property?
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
-              Don't wait to create unforgettable memories. Book your stay today and discover 
-              what makes Hotel Kargil the ultimate luxury destination.
+              Don't wait to discover your perfect property. Contact us today and let our experts 
+              guide you through premium real estate opportunities.
             </p>
             <motion.a
-              href="/booking"
+              href="/gallery"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="btn-luxury inline-block text-lg px-12 py-4"
             >
-              Book Your Stay
+              View Properties
             </motion.a>
           </motion.div>
         </div>

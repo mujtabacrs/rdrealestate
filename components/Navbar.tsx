@@ -24,7 +24,6 @@ const Navbar = () => {
     { name: 'About', href: '/about' },
     { name: 'Gallery', href: '/gallery' },
     { name: 'Contact', href: '/contact' },
-    { name: 'Book Now', href: '/booking', isButton: true },
   ]
 
   return (
@@ -47,8 +46,12 @@ const Navbar = () => {
             >
               <img 
                 src={IMAGES.logo} 
-                alt="RealEstate RD Logo" 
-                className="h-24 md:h-32 w-auto object-contain"
+                alt="RD Properties Logo" 
+                className="h-14 md:h-18 w-auto object-contain"
+                style={{ 
+                  filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.5))',
+                  mixBlendMode: 'normal'
+                }}
               />
             </motion.div>
           </Link>
@@ -59,11 +62,7 @@ const Navbar = () => {
               <Link
                 key={item.name}
                 href={item.href}
-                className={
-                  item.isButton
-                    ? 'btn-luxury text-sm'
-                    : 'text-white hover:text-luxury-gold transition-colors duration-300 font-medium'
-                }
+                className="text-white hover:text-luxury-gold transition-colors duration-300 font-medium"
               >
                 {item.name}
               </Link>
@@ -96,10 +95,7 @@ const Navbar = () => {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`block ${item.isButton
-                    ? 'btn-luxury text-center'
-                    : 'text-white hover:text-luxury-gold transition-colors duration-300 font-medium'
-                    }`}
+                  className="block text-white hover:text-luxury-gold transition-colors duration-300 font-medium"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.name}

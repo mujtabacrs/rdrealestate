@@ -61,25 +61,25 @@ const VideoTour = () => {
           className="text-left lg:pr-10"
         >
           <span className="text-[0.6rem] uppercase tracking-[0.5em] text-foreground-rgb/40 mb-6 block">
-            The Perspective
+            Property Showcase
           </span>
           <h2 className="font-editorial text-5xl md:text-8xl text-foreground-rgb leading-[0.9] mb-12">
-            Experience the <br /> <span className="italic text-c-gold">Origin</span>
+            Discover Our <br /> <span className="italic text-c-gold">Properties</span>
           </h2>
           <p className="text-xs md:text-sm text-foreground-rgb/60 uppercase tracking-[0.3em] leading-relaxed max-w-md">
-            A cinematic journey through our architectural presence and internal geometry. 
-            Form results from context, material, and use at the point of origin.
+            A cinematic journey through our premium real estate portfolio and architectural excellence. 
+            Quality emerges from location, design, and purpose at every property.
           </p>
 
           {/* Technical Footer Detail */}
           <div className="mt-16 space-y-6 text-[0.5rem] uppercase tracking-[0.4em] text-foreground-rgb/30">
             <div className="flex items-center gap-4">
               <span className="w-8 h-px bg-foreground-rgb/10" />
-              <span>4K Optical Resolution</span>
+              <span>Premium Property Tours</span>
             </div>
             <div className="flex items-center gap-4">
               <span className="w-8 h-px bg-foreground-rgb/10" />
-              <span>Spatial Audio Presence</span>
+              <span>Virtual Property Experience</span>
             </div>
           </div>
         </motion.div>
@@ -123,7 +123,7 @@ const VideoTour = () => {
                   <div className="w-1 h-1 bg-white rounded-full animate-ping" />
                 </div>
                 <span className="font-editorial text-xl text-white italic">
-                  Live from Ladakh
+                  R.D Properties Showcase
                 </span>
               </div>
 
